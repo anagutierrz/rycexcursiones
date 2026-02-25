@@ -1,0 +1,1064 @@
+
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RYC Excursiones – República Dominicana</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy:  { DEFAULT:'#0d2b4e', 50:'#f0f6ff', 100:'#d6e8ff', 200:'#aed0ff', 300:'#75adff', 400:'#3d85f5', 500:'#1a60d4', 600:'#1347b0', 700:'#0d3488', 800:'#0d2b4e', 900:'#081a30' },
+        sky:   { DEFAULT:'#2d88e0', light:'#5aabff', dark:'#1a60d4' },
+        gold:  { DEFAULT:'#f5a623', light:'#ffc347' },
+      },
+      fontFamily: {
+        display: ['"Playfair Display"','serif'],
+        sans:    ['"DM Sans"','sans-serif'],
+      },
+    }
+  }
+}
+</script>
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;overflow-x:hidden;color:#0d2b4e;}
+
+  /* Custom cursor */
+  .cursor{width:10px;height:10px;background:#2d88e0;border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+  .cursor-ring{width:34px;height:34px;border:1.5px solid rgba(45,136,224,.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .35s ease;}
+  body.hovered .cursor{width:5px;height:5px;}
+  body.hovered .cursor-ring{width:50px;height:50px;border-color:rgba(45,136,224,.2);}
+
+  /* Scroll progress */
+  #sp{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#0d2b4e,#2d88e0,#f5a623);z-index:10001;transition:width .1s;}
+
+  /* Navbar */
+  .nav-over{background:transparent;}
+  .nav-solid{background:rgba(255,255,255,.97);backdrop-filter:blur(18px);box-shadow:0 2px 24px rgba(13,43,78,.1);}
+  .nav-solid .nl{color:#0d2b4e !important;}
+  .nav-solid .logo-text{color:#0d2b4e !important;}
+  .nav-solid .logo-sub{color:#6b88a8 !important;}
+
+  /* Hero */
+  .hero-bg{background:linear-gradient(150deg,#081a30 0%,#0d2b4e 40%,#1347b0 100%);}
+
+  /* Reveal */
+  .rv{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease;}
+  .rv.on{opacity:1;transform:none;}
+  .rv-l{opacity:0;transform:translateX(-28px);transition:opacity .75s ease,transform .75s ease;}
+  .rv-l.on{opacity:1;transform:none;}
+  .rv-r{opacity:0;transform:translateX(28px);transition:opacity .75s ease,transform .75s ease;}
+  .rv-r.on{opacity:1;transform:none;}
+  .d1{transition-delay:.1s;} .d2{transition-delay:.2s;} .d3{transition-delay:.3s;} .d4{transition-delay:.4s;} .d5{transition-delay:.5s;} .d6{transition-delay:.6s;}
+
+  /* Cards */
+  .pkg-card{transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s;}
+  .pkg-card:hover{transform:translateY(-8px) scale(1.015);box-shadow:0 24px 48px rgba(13,43,78,.16);}
+  .iz{overflow:hidden;}
+  .iz img{transition:transform .7s cubic-bezier(.25,.46,.45,.94);}
+  .iz:hover img,.pkg-card:hover .iz img{transform:scale(1.08);}
+
+  /* Accordion */
+  .acc-body{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+  .acc-body.open{max-height:200px;}
+  .acc-icon{transition:transform .3s;}
+  .acc-open .acc-icon{transform:rotate(45deg);}
+
+  /* Tabs */
+  .tab-active{background:#0d2b4e !important;color:#fff !important;border-color:#0d2b4e !important;}
+
+  /* Progress */
+  .pb{transition:width 1.6s cubic-bezier(.25,.46,.45,.94);}
+
+  /* Mobile menu */
+  #mm{transform:translateX(100%);transition:transform .4s cubic-bezier(.25,.46,.45,.94);}
+  #mm.open{transform:translateX(0);}
+  #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45;}
+  #overlay.open{display:block;}
+
+  /* Lightbox */
+  #lb{display:none;position:fixed;inset:0;background:rgba(5,15,30,.95);z-index:9000;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+  #lb.open{display:flex;}
+  #lb img{max-width:90vw;max-height:88vh;border-radius:12px;object-fit:contain;}
+
+  /* Testimonial track */
+  .ttrack{display:flex;transition:transform .5s cubic-bezier(.25,.46,.45,.94);}
+
+  /* WA pulse */
+  @keyframes wapulse{0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,.4)}70%{box-shadow:0 0 0 14px rgba(37,211,102,0)}}
+  .wa{animation:wapulse 2s infinite;}
+
+  /* Float */
+  @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .float{animation:fl 5s ease-in-out infinite;}
+
+  /* Particles */
+  .ptc{position:absolute;border-radius:50%;background:rgba(255,255,255,.12);pointer-events:none;}
+  @keyframes rise{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}90%{opacity:.6}100%{transform:translateY(-80px) scale(1);opacity:0}}
+
+  /* Ripple */
+  .rip{position:relative;overflow:hidden;}
+  .rip::after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.3);width:8px;height:8px;transform:scale(0);}
+
+  /* Section divider */
+  .wave-b svg,.wave-t svg{display:block;}
+
+  /* Highlight text */
+  .hl{position:relative;display:inline-block;}
+  .hl::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:8px;background:rgba(45,136,224,.2);z-index:-1;border-radius:4px;}
+
+  /* Skeleton for loading */
+  @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+</style>
+</head>
+<body class="bg-white">
+
+<!-- Custom cursor -->
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curR"></div>
+
+<!-- Scroll progress -->
+<div id="sp" style="width:0%"></div>
+
+<!-- ═══════════════════════════
+     NAVBAR
+═══════════════════════════ -->
+<nav id="nav" class="nav-over fixed top-0 left-0 right-0 z-50 transition-all duration-400">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-4 flex items-center justify-between">
+
+    <!-- Logo real -->
+    <a href="https://rycexcursionesrd.com/" class="flex items-center gap-3 group flex-shrink-0">
+      <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/01/RYC-excursiones-logo-w-300x144.png"
+           id="logo-w" class="h-10 object-contain" alt="RYC Excursiones">
+      <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/01/RYC-excursiones-logo-blue-1-scaled.png"
+           id="logo-b" class="h-10 object-contain hidden" alt="RYC Excursiones">
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden lg:flex items-center gap-7">
+      <li><a href="#inicio"       class="nl text-white/85 hover:text-white text-sm font-medium tracking-wide relative after:absolute after:bottom-[-3px] after:left-0 after:w-0 after:h-[2px] after:bg-gold after:transition-all after:duration-300 hover:after:w-full transition-colors">Inicio</a></li>
+      <li><a href="#servicios"    class="nl text-white/85 hover:text-white text-sm font-medium tracking-wide relative after:absolute after:bottom-[-3px] after:left-0 after:w-0 after:h-[2px] after:bg-gold after:transition-all after:duration-300 hover:after:w-full transition-colors">Servicios</a></li>
+      <li><a href="#excursiones"  class="nl text-white/85 hover:text-white text-sm font-medium tracking-wide relative after:absolute after:bottom-[-3px] after:left-0 after:w-0 after:h-[2px] after:bg-gold after:transition-all after:duration-300 hover:after:w-full transition-colors">Excursiones</a></li>
+      <li><a href="#nosotros"     class="nl text-white/85 hover:text-white text-sm font-medium tracking-wide relative after:absolute after:bottom-[-3px] after:left-0 after:w-0 after:h-[2px] after:bg-gold after:transition-all after:duration-300 hover:after:w-full transition-colors">Nosotros</a></li>
+      <li><a href="#galeria"      class="nl text-white/85 hover:text-white text-sm font-medium tracking-wide relative after:absolute after:bottom-[-3px] after:left-0 after:w-0 after:h-[2px] after:bg-gold after:transition-all after:duration-300 hover:after:w-full transition-colors">Galería</a></li>
+      <li><a href="#contacto"     class="nl text-white/85 hover:text-white text-sm font-medium tracking-wide relative after:absolute after:bottom-[-3px] after:left-0 after:w-0 after:h-[2px] after:bg-gold after:transition-all after:duration-300 hover:after:w-full transition-colors">Contacto</a></li>
+    </ul>
+
+    <div class="flex items-center gap-3">
+      <a href="https://rycexcursionesrd.com/excursiones-2/" class="rip hidden md:inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy-800 font-bold text-sm px-5 py-2.5 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-gold/30 hover:-translate-y-0.5">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Reservar
+      </a>
+      <button onclick="openMM()" class="lg:hidden text-white p-2 hover:bg-white/10 rounded-xl transition-colors" id="hb">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile overlay -->
+<div id="overlay" onclick="closeMM()"></div>
+
+<!-- Mobile Menu -->
+<div id="mm" class="fixed top-0 right-0 bottom-0 w-72 bg-navy-900 z-50 flex flex-col pt-6 px-5 shadow-2xl">
+  <div class="flex items-center justify-between mb-8">
+    <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/01/RYC-excursiones-logo-w-300x144.png" class="h-9" alt="RYC">
+    <button onclick="closeMM()" class="text-white/60 hover:text-white p-2"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div>
+  <ul class="flex flex-col gap-1 flex-1">
+    <li><a href="#inicio"      onclick="closeMM()" class="flex items-center gap-3 py-3 px-4 text-white/75 hover:text-white hover:bg-white/10 rounded-xl transition-all">🏠 Inicio</a></li>
+    <li><a href="#servicios"   onclick="closeMM()" class="flex items-center gap-3 py-3 px-4 text-white/75 hover:text-white hover:bg-white/10 rounded-xl transition-all">🧩 Servicios</a></li>
+    <li><a href="#excursiones" onclick="closeMM()" class="flex items-center gap-3 py-3 px-4 text-white/75 hover:text-white hover:bg-white/10 rounded-xl transition-all">🌊 Excursiones</a></li>
+    <li><a href="#nosotros"    onclick="closeMM()" class="flex items-center gap-3 py-3 px-4 text-white/75 hover:text-white hover:bg-white/10 rounded-xl transition-all">👥 Nosotros</a></li>
+    <li><a href="#galeria"     onclick="closeMM()" class="flex items-center gap-3 py-3 px-4 text-white/75 hover:text-white hover:bg-white/10 rounded-xl transition-all">🖼️ Galería</a></li>
+    <li><a href="#faq"         onclick="closeMM()" class="flex items-center gap-3 py-3 px-4 text-white/75 hover:text-white hover:bg-white/10 rounded-xl transition-all">❓ FAQ</a></li>
+    <li><a href="#contacto"    onclick="closeMM()" class="flex items-center gap-3 py-3 px-4 text-white/75 hover:text-white hover:bg-white/10 rounded-xl transition-all">📬 Contacto</a></li>
+  </ul>
+  <div class="border-t border-white/10 pt-5 pb-6">
+    <a href="https://rycexcursionesrd.com/excursiones-2/" class="block text-center bg-gold text-navy-900 font-bold py-3 rounded-xl hover:bg-gold-light transition-colors">Reservar Ahora</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════
+  1. HERO
+═══════════════════════════ -->
+<section id="inicio" class="hero-bg relative min-h-screen flex items-center overflow-hidden">
+  <!-- Particles container -->
+  <div id="ptcs" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+
+  <!-- Decorative rings -->
+  <div class="absolute top-24 right-16 w-80 h-80 rounded-full border border-white/8 animate-pulse pointer-events-none"></div>
+  <div class="absolute top-40 right-32 w-52 h-52 rounded-full border border-white/5 pointer-events-none"></div>
+  <div class="absolute -bottom-24 -left-24 w-[480px] h-[480px] rounded-full bg-sky/5 pointer-events-none"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-28 pb-36 w-full">
+    <div class="grid lg:grid-cols-2 gap-14 items-center">
+
+      <!-- LEFT: Text -->
+      <div>
+        <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 mb-7" style="animation:fadeIn .8s ease forwards">
+          <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+          <span class="text-white/90 text-sm font-medium">🇩🇴 República Dominicana · Disponible todo el año</span>
+        </div>
+
+        <h1 class="font-display text-5xl lg:text-[4.2rem] font-bold leading-[1.06] text-white mb-6">
+          <span class="block" style="opacity:0;animation:fadeUp .7s .15s forwards">Descubre</span>
+          <span class="block italic text-sky-light" style="opacity:0;animation:fadeUp .7s .3s forwards" id="twword">lo mejor</span>
+          <span class="block" style="opacity:0;animation:fadeUp .7s .45s forwards">de nuestra isla</span>
+        </h1>
+
+        <p class="text-white/70 text-lg leading-relaxed mb-9 max-w-md" style="opacity:0;animation:fadeUp .7s .6s forwards">
+          Más de 7 años creando experiencias únicas en los destinos más impresionantes de la República Dominicana. Tu aventura comienza aquí.
+        </p>
+
+        <!-- Search bar -->
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 mb-8" style="opacity:0;animation:fadeUp .7s .75s forwards">
+          <p class="text-white/50 text-xs uppercase tracking-widest mb-3">¿A dónde quieres ir?</p>
+          <div class="flex gap-3 flex-wrap">
+            <select id="destSelect" class="flex-1 min-w-[160px] bg-white/10 border border-white/20 text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-white/50 appearance-none cursor-pointer">
+              <option value="" class="text-gray-900">Seleccionar destino...</option>
+              <option value="https://rycexcursionesrd.com/product/avistamiento-de-ballenas-jorobadas/" class="text-gray-900">🐋 Avistamiento de Ballenas</option>
+              <option value="https://rycexcursionesrd.com/product/laguna-dudu-rio-san-juan/" class="text-gray-900">🏊 Laguna Dudú</option>
+              <option value="https://rycexcursionesrd.com/product/cano-frio-playa-fronton/" class="text-gray-900">⛵ Caño Frío + Frontón</option>
+              <option value="https://rycexcursionesrd.com/product/buggies-playa-macao/" class="text-gray-900">🏎️ Buggies & Playa Macao</option>
+              <option value="https://rycexcursionesrd.com/product/full-day-jarabacoa/" class="text-gray-900">🏔️ Full Day Jarabacoa</option>
+              <option value="https://rycexcursionesrd.com/product/parapente-en-jarabacoa/" class="text-gray-900">🪂 Parapente Jarabacoa</option>
+            </select>
+            <button onclick="goDestino()" class="rip bg-gold hover:bg-gold-light text-navy-800 font-bold text-sm px-6 py-3 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-gold/40 hover:-translate-y-0.5 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              Explorar
+            </button>
+          </div>
+        </div>
+
+        <!-- Social proof -->
+        <div class="flex items-center gap-5 flex-wrap" style="opacity:0;animation:fadeUp .7s .9s forwards">
+          <div class="flex -space-x-2.5">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=a1&backgroundColor=b6e3f4" class="w-9 h-9 rounded-full border-2 border-white/40 bg-sky-100" alt="">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=b2&backgroundColor=ffdfbf" class="w-9 h-9 rounded-full border-2 border-white/40 bg-orange-100" alt="">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=c3&backgroundColor=c0aede" class="w-9 h-9 rounded-full border-2 border-white/40 bg-purple-100" alt="">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=d4&backgroundColor=d1f0d1" class="w-9 h-9 rounded-full border-2 border-white/40 bg-green-100" alt="">
+          </div>
+          <div>
+            <div class="flex items-center gap-1"><span class="text-gold text-sm">★★★★★</span><span class="text-white font-bold text-sm ml-1">4.9/5</span></div>
+            <p class="text-white/50 text-xs">+5,000 viajeros satisfechos</p>
+          </div>
+          <div class="w-px h-8 bg-white/15 hidden sm:block"></div>
+          <a href="https://rycexcursionesrd.com/excursiones-2/" class="text-white/70 hover:text-gold text-sm font-medium transition-colors flex items-center gap-1 hidden sm:flex">Ver todos los paquetes <span>→</span></a>
+        </div>
+      </div>
+
+      <!-- RIGHT: Floating product card -->
+      <div class="hidden lg:flex justify-center items-center">
+        <div class="relative w-[340px]">
+          <!-- Main card -->
+          <a href="https://rycexcursionesrd.com/product/avistamiento-de-ballenas-jorobadas/" class="block bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl overflow-hidden shadow-2xl float group cursor-pointer">
+            <div class="iz h-52 relative">
+              <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/02/BAllena-300x350.jpg"
+                   class="w-full h-full object-cover" alt="Ballenas Jorobadas">
+              <div class="absolute inset-0 bg-gradient-to-t from-navy-900/70 to-transparent"></div>
+              <span class="absolute top-3 left-3 bg-gold text-navy-800 text-xs font-bold px-3 py-1 rounded-full">⭐ Más Popular</span>
+              <div class="absolute bottom-4 left-4">
+                <p class="font-display text-white font-bold text-lg leading-tight">Ballenas Jorobadas</p>
+                <p class="text-white/70 text-xs mt-1">📍 Samaná · Todo incluido</p>
+              </div>
+            </div>
+            <div class="px-4 py-3 flex items-center justify-between">
+              <div>
+                <p class="text-white/50 text-xs">Desde</p>
+                <p class="font-display text-white font-bold text-2xl">USD 80</p>
+              </div>
+              <span class="bg-sky text-white text-xs font-bold px-4 py-2 rounded-xl group-hover:bg-sky-dark transition-colors">Reservar →</span>
+            </div>
+          </a>
+          <!-- Badge flotante -->
+          <div class="absolute -top-4 -right-4 bg-emerald-500 text-white rounded-2xl px-3 py-2 shadow-xl text-xs font-semibold" style="animation:fl 4s 1s ease-in-out infinite">
+            🟢 Cupos disponibles
+          </div>
+          <!-- Recent booking -->
+          <div class="absolute -bottom-4 -left-4 bg-white rounded-2xl px-3 py-2 shadow-xl flex items-center gap-2" style="animation:fl 5s .5s ease-in-out infinite">
+            <div class="w-7 h-7 bg-navy-100 rounded-full flex items-center justify-content-center overflow-hidden flex-shrink-0">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=jd&backgroundColor=b6e3f4" class="w-7 h-7" alt="">
+            </div>
+            <div class="leading-none">
+              <p class="text-navy-800 font-semibold text-xs">Reserva confirmada</p>
+              <p class="text-gray-400 text-xs mt-0.5">hace 3 min · Ciudad de México</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom wave -->
+  <div class="absolute bottom-0 left-0 right-0">
+    <svg viewBox="0 0 1440 72" preserveAspectRatio="none" class="w-full h-16 lg:h-20 block">
+      <path d="M0,36 C360,72 720,0 1080,36 C1260,54 1380,30 1440,36 L1440,72 L0,72 Z" fill="white"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+  2. STATS
+═══════════════════════════ -->
+<section class="bg-white py-14 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
+      <div class="text-center rv d1">
+        <div class="w-14 h-14 bg-navy-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl hover:bg-navy-700 transition-colors duration-300 cursor-default group hover:scale-105">🧭</div>
+        <p class="font-display text-4xl font-bold text-navy count-up" data-target="7" data-suffix="+">0</p>
+        <p class="text-gray-500 text-sm mt-1">Años de experiencia</p>
+      </div>
+      <div class="text-center rv d2">
+        <div class="w-14 h-14 bg-navy-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl hover:bg-navy-700 transition-colors duration-300 cursor-default hover:scale-105">🏝️</div>
+        <p class="font-display text-4xl font-bold text-navy count-up" data-target="30" data-suffix="+">0</p>
+        <p class="text-gray-500 text-sm mt-1">Destinos disponibles</p>
+      </div>
+      <div class="text-center rv d3">
+        <div class="w-14 h-14 bg-navy-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl hover:bg-navy-700 transition-colors duration-300 cursor-default hover:scale-105">👥</div>
+        <p class="font-display text-4xl font-bold text-navy count-up" data-target="5000" data-suffix="+">0</p>
+        <p class="text-gray-500 text-sm mt-1">Viajeros satisfechos</p>
+      </div>
+      <div class="text-center rv d4">
+        <div class="w-14 h-14 bg-navy-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl hover:bg-navy-700 transition-colors duration-300 cursor-default hover:scale-105">⭐</div>
+        <p class="font-display text-4xl font-bold text-navy count-up" data-target="4.9" data-decimal="1">0</p>
+        <p class="text-gray-500 text-sm mt-1">Calificación promedio</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+  3. SERVICIOS (Categorías)
+═══════════════════════════ -->
+<section id="servicios" class="bg-navy-50 py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14 rv">
+      <span class="inline-flex items-center gap-2 text-sky font-semibold text-sm uppercase tracking-widest mb-3"><span class="w-5 h-px bg-sky"></span>Nuestros Servicios<span class="w-5 h-px bg-sky"></span></span>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-navy mb-4">¿Qué tipo de <em class="text-sky">aventura</em><br>estás buscando?</h2>
+      <p class="text-gray-500 text-lg max-w-xl mx-auto">Desde excursiones de un día hasta tours de fin de semana. Tenemos la experiencia perfecta para ti.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <!-- Excursiones -->
+      <a href="https://rycexcursionesrd.com/product-category/excursiones/" class="srv-card group relative rounded-3xl overflow-hidden iz h-72 block cursor-pointer">
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2024/01/excursiones.jpg" class="w-full h-full object-cover" alt="Excursiones">
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-900/85 via-navy-900/20 to-transparent"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-6">
+          <span class="bg-gold text-navy-800 text-xs font-bold px-3 py-1 rounded-full w-fit mb-2">Más popular</span>
+          <h3 class="font-display text-white text-2xl font-bold group-hover:text-gold transition-colors">Excursiones</h3>
+          <p class="text-white/65 text-sm mt-1">Aventuras de día completo por toda la isla</p>
+          <span class="mt-3 text-white/50 text-xs group-hover:text-gold transition-colors flex items-center gap-1">Ver excursiones <span class="group-hover:translate-x-1 transition-transform inline-block">→</span></span>
+        </div>
+      </a>
+
+      <!-- Tours fin de semana -->
+      <a href="https://rycexcursionesrd.com/product-category/la-vuelta-a-rd/" class="srv-card group relative rounded-3xl overflow-hidden iz h-72 block cursor-pointer">
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2024/10/WhatsApp-Image-2024-09-05-at-11.28.34-AM-1.jpeg" class="w-full h-full object-cover" alt="Tours de fin de semana">
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-900/85 via-navy-900/20 to-transparent"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-6">
+          <span class="bg-sky text-white text-xs font-bold px-3 py-1 rounded-full w-fit mb-2">🆕 Nuevo</span>
+          <h3 class="font-display text-white text-2xl font-bold group-hover:text-gold transition-colors">Tours de Fin de Semana</h3>
+          <p class="text-white/65 text-sm mt-1">La vuelta a RD · Hospedaje incluido</p>
+          <span class="mt-3 text-white/50 text-xs group-hover:text-gold transition-colors flex items-center gap-1">Ver tours <span class="group-hover:translate-x-1 transition-transform inline-block">→</span></span>
+        </div>
+      </a>
+
+      <!-- Transporte -->
+      <a href="https://rycexcursionesrd.com/transport-2/" class="srv-card group relative rounded-3xl overflow-hidden iz h-72 block cursor-pointer">
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/01/10-2.jpg" class="w-full h-full object-cover" alt="Transporte">
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-900/85 via-navy-900/20 to-transparent"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-6">
+          <h3 class="font-display text-white text-2xl font-bold group-hover:text-gold transition-colors">Transporte</h3>
+          <p class="text-white/65 text-sm mt-1">Traslados seguros · Aeropuerto y hoteles</p>
+          <span class="mt-3 text-white/50 text-xs group-hover:text-gold transition-colors flex items-center gap-1">Ver servicio <span class="group-hover:translate-x-1 transition-transform inline-block">→</span></span>
+        </div>
+      </a>
+
+      <!-- Resort -->
+      <a href="https://rycexcursionesrd.com/product-category/resort/" class="srv-card group relative rounded-3xl overflow-hidden iz h-72 block cursor-pointer">
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/01/82636c93-493e-4f9d-83ce-0780c8ab4690.jpg" class="w-full h-full object-cover" alt="Resort">
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-900/85 via-navy-900/20 to-transparent"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-6">
+          <h3 class="font-display text-white text-2xl font-bold group-hover:text-gold transition-colors">Resort & Hospedaje</h3>
+          <p class="text-white/65 text-sm mt-1">Alojamiento seleccionado</p>
+          <span class="mt-3 text-white/50 text-xs group-hover:text-gold transition-colors flex items-center gap-1">Ver opciones <span class="group-hover:translate-x-1 transition-transform inline-block">→</span></span>
+        </div>
+      </a>
+
+      <!-- Tours internacionales -->
+      <a href="https://rycexcursionesrd.com/product-category/tours-internacionales/" class="srv-card group relative rounded-3xl overflow-hidden iz h-72 block cursor-pointer">
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/01/woman-traveling-in-nantes-city-france-2025-03-17-13-50-03-utc2-e1743309441820.webp" class="w-full h-full object-cover" alt="Tours internacionales">
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-900/85 via-navy-900/20 to-transparent"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-6">
+          <span class="bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full w-fit mb-2">✈️ Internacional</span>
+          <h3 class="font-display text-white text-2xl font-bold group-hover:text-gold transition-colors">Tours Internacionales</h3>
+          <p class="text-white/65 text-sm mt-1">Más allá de las fronteras</p>
+          <span class="mt-3 text-white/50 text-xs group-hover:text-gold transition-colors flex items-center gap-1">Ver tours <span class="group-hover:translate-x-1 transition-transform inline-block">→</span></span>
+        </div>
+      </a>
+
+      <!-- Boletos aéreos -->
+      <a href="https://rycexcursionesrd.com/product-category/boletos-aereos/" class="group rounded-3xl bg-gradient-to-br from-navy-800 to-navy-900 h-72 flex flex-col justify-between p-7 cursor-pointer hover:shadow-xl hover:shadow-navy/20 transition-all duration-300 hover:-translate-y-1" style="background-image:radial-gradient(circle at 80% 20%,rgba(45,136,224,.25) 0%,transparent 60%)">
+        <div>
+          <span class="text-4xl block mb-4">✈️</span>
+          <h3 class="font-display text-white text-2xl font-bold mb-2 group-hover:text-gold transition-colors">Boletos Aéreos</h3>
+          <p class="text-white/55 text-sm leading-relaxed">Conseguimos los mejores precios en vuelos nacionales e internacionales.</p>
+        </div>
+        <span class="flex items-center gap-2 text-white/50 text-sm group-hover:text-gold transition-colors">Ver boletos <span class="group-hover:translate-x-1 transition-transform inline-block">→</span></span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+  4. EXCURSIONES (Productos reales)
+═══════════════════════════ -->
+<section id="excursiones" class="bg-white py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-12 rv">
+      <div>
+        <span class="inline-flex items-center gap-2 text-sky font-semibold text-sm uppercase tracking-widest mb-3"><span class="w-5 h-px bg-sky"></span>Paquetes</span>
+        <h2 class="font-display text-4xl lg:text-5xl font-bold text-navy">Excursiones<br><em class="text-sky">más populares</em></h2>
+      </div>
+      <a href="https://rycexcursionesrd.com/excursiones-2/" class="rip flex items-center gap-2 border-2 border-navy text-navy hover:bg-navy hover:text-white font-semibold text-sm px-6 py-3 rounded-full transition-all duration-300">
+        Ver todas <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="flex flex-wrap gap-3 mb-8 rv">
+      <button onclick="filterTab('all',this)" class="tab-btn tab-active text-sm font-semibold border-2 border-navy px-5 py-2 rounded-full transition-all duration-300 hover:bg-navy hover:text-white hover:border-navy">Todos</button>
+      <button onclick="filterTab('mar',this)"  class="tab-btn border-2 border-gray-200 text-gray-500 text-sm font-semibold px-5 py-2 rounded-full transition-all duration-300 hover:border-navy hover:text-navy">🌊 Mar</button>
+      <button onclick="filterTab('montana',this)" class="tab-btn border-2 border-gray-200 text-gray-500 text-sm font-semibold px-5 py-2 rounded-full transition-all duration-300 hover:border-navy hover:text-navy">🏔️ Montaña</button>
+      <button onclick="filterTab('aventura',this)" class="tab-btn border-2 border-gray-200 text-gray-500 text-sm font-semibold px-5 py-2 rounded-full transition-all duration-300 hover:border-navy hover:text-navy">🔥 Aventura</button>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="pkgGrid">
+
+      <!-- 1. Ballenas -->
+      <a href="https://rycexcursionesrd.com/product/avistamiento-de-ballenas-jorobadas/" data-cat="mar" class="pkg-card bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm block group">
+        <div class="iz relative h-56">
+          <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/02/BAllena-300x350.jpg" class="w-full h-full object-cover" alt="Avistamiento de Ballenas">
+          <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
+          <span class="absolute top-3 left-3 bg-gold text-navy-800 text-xs font-bold px-3 py-1 rounded-full">⭐ Popular</span>
+          <span class="absolute top-3 right-3 bg-sky/90 text-white text-xs font-medium px-3 py-1 rounded-full">🌊 Mar</span>
+          <button onclick="toggleWish(event,this)" class="absolute bottom-3 right-3 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-all duration-300" data-w="0">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </button>
+        </div>
+        <div class="p-5">
+          <h3 class="font-display font-bold text-navy text-xl mb-1.5 group-hover:text-sky transition-colors">Avistamiento de Ballenas Jorobadas</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-3">Observa ballenas jorobadas en su hábitat natural en las aguas de Samaná. ¡Una experiencia irrepetible!</p>
+          <div class="flex items-center gap-3 text-xs text-gray-400 mb-4 flex-wrap">
+            <span>📍 Samaná</span><span>·</span><span>🕐 Todo el día</span><span>·</span><span>👥 Grupos</span>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div><p class="text-gray-400 text-xs">Desde</p><p class="font-display font-bold text-2xl text-navy">USD 80</p></div>
+            <span class="rip bg-navy hover:bg-sky text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-all duration-300 group-hover:bg-sky">Reservar →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 2. Laguna Dudú -->
+      <a href="https://rycexcursionesrd.com/product/laguna-dudu-rio-san-juan/" data-cat="mar" class="pkg-card bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm block group">
+        <div class="iz relative h-56">
+          <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/02/Laguna-dudu-300x350.jpg" class="w-full h-full object-cover" alt="Laguna Dudú">
+          <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
+          <span class="absolute top-3 right-3 bg-sky/90 text-white text-xs font-medium px-3 py-1 rounded-full">🌊 Mar</span>
+          <button onclick="toggleWish(event,this)" class="absolute bottom-3 right-3 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-all duration-300" data-w="0">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </button>
+        </div>
+        <div class="p-5">
+          <h3 class="font-display font-bold text-navy text-xl mb-1.5 group-hover:text-sky transition-colors">Laguna Dudú + Río San Juan</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-3">Sumérgete en las cristalinas aguas de la Laguna Dudú y explora el pintoresco Río San Juan.</p>
+          <div class="flex items-center gap-3 text-xs text-gray-400 mb-4 flex-wrap">
+            <span>📍 Río San Juan</span><span>·</span><span>🕐 Todo el día</span><span>·</span><span>🏊 Nado</span>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div><p class="text-gray-400 text-xs">Desde</p><p class="font-display font-bold text-2xl text-navy">USD 49</p></div>
+            <span class="rip bg-navy hover:bg-sky text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-all duration-300 group-hover:bg-sky">Reservar →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 3. Caño Frío -->
+      <a href="https://rycexcursionesrd.com/product/cano-frio-playa-fronton/" data-cat="mar" class="pkg-card bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm block group">
+        <div class="iz relative h-56">
+          <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/02/Fronto-cano-firo-300x350.jpg" class="w-full h-full object-cover" alt="Caño Frío Frontón">
+          <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
+          <span class="absolute top-3 left-3 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">🆕 Nuevo</span>
+          <span class="absolute top-3 right-3 bg-sky/90 text-white text-xs font-medium px-3 py-1 rounded-full">🌊 Mar</span>
+          <button onclick="toggleWish(event,this)" class="absolute bottom-3 right-3 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-all duration-300" data-w="0">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </button>
+        </div>
+        <div class="p-5">
+          <h3 class="font-display font-bold text-navy text-xl mb-1.5 group-hover:text-sky transition-colors">Caño Frío + Playa Frontón</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-3">Navega por el Caño Frío y descubre la espectacular Playa Frontón, accesible solo por bote.</p>
+          <div class="flex items-center gap-3 text-xs text-gray-400 mb-4 flex-wrap">
+            <span>📍 Las Galeras</span><span>·</span><span>⛵ Bote</span><span>·</span><span>🏖️ Playa</span>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div><p class="text-gray-400 text-xs">Desde</p><p class="font-display font-bold text-2xl text-navy">USD 56</p></div>
+            <span class="rip bg-navy hover:bg-sky text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-all duration-300 group-hover:bg-sky">Reservar →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 4. Buggies -->
+      <a href="https://rycexcursionesrd.com/product/buggies-playa-macao/" data-cat="aventura" class="pkg-card bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm block group">
+        <div class="iz relative h-56">
+          <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/02/Buggies-300x350.jpg" class="w-full h-full object-cover" alt="Buggies Playa Macao">
+          <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
+          <span class="absolute top-3 right-3 bg-orange-500/90 text-white text-xs font-medium px-3 py-1 rounded-full">🔥 Aventura</span>
+          <button onclick="toggleWish(event,this)" class="absolute bottom-3 right-3 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-all duration-300" data-w="0">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </button>
+        </div>
+        <div class="p-5">
+          <h3 class="font-display font-bold text-navy text-xl mb-1.5 group-hover:text-sky transition-colors">Buggies & Playa Macao</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-3">Adrenalina total en los buggies junto a los campos de caña de azúcar y la hermosa Playa Macao.</p>
+          <div class="flex items-center gap-3 text-xs text-gray-400 mb-4 flex-wrap">
+            <span>📍 Punta Cana</span><span>·</span><span>🏎️ Buggy</span><span>·</span><span>🏖️ Playa</span>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div><p class="text-gray-400 text-xs">Desde</p><p class="font-display font-bold text-2xl text-navy">USD 56</p></div>
+            <span class="rip bg-navy hover:bg-sky text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-all duration-300 group-hover:bg-sky">Reservar →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 5. Jarabacoa Full Day -->
+      <a href="https://rycexcursionesrd.com/product/full-day-jarabacoa/" data-cat="montana" class="pkg-card bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm block group">
+        <div class="iz relative h-56">
+          <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/02/Jarabacoa-Full-Day-300x350.jpg" class="w-full h-full object-cover" alt="Jarabacoa Full Day">
+          <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
+          <span class="absolute top-3 right-3 bg-green-600/90 text-white text-xs font-medium px-3 py-1 rounded-full">🏔️ Montaña</span>
+          <button onclick="toggleWish(event,this)" class="absolute bottom-3 right-3 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-all duration-300" data-w="0">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </button>
+        </div>
+        <div class="p-5">
+          <h3 class="font-display font-bold text-navy text-xl mb-1.5 group-hover:text-sky transition-colors">Full Day Jarabacoa</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-3">Explora el corazón verde de la República Dominicana: ríos, cascadas y montañas impresionantes.</p>
+          <div class="flex items-center gap-3 text-xs text-gray-400 mb-4 flex-wrap">
+            <span>📍 Jarabacoa</span><span>·</span><span>🌿 Naturaleza</span><span>·</span><span>💧 Cascadas</span>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div><p class="text-gray-400 text-xs">Desde</p><p class="font-display font-bold text-2xl text-navy">USD 35</p></div>
+            <span class="rip bg-navy hover:bg-sky text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-all duration-300 group-hover:bg-sky">Reservar →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 6. Parapente -->
+      <a href="https://rycexcursionesrd.com/product/parapente-en-jarabacoa/" data-cat="aventura montana" class="pkg-card bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm block group">
+        <div class="iz relative h-56">
+          <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/02/Jarabacoa-parapente-300x350.jpg" class="w-full h-full object-cover" alt="Parapente Jarabacoa">
+          <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
+          <span class="absolute top-3 left-3 bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full">🪂 Extremo</span>
+          <span class="absolute top-3 right-3 bg-orange-500/90 text-white text-xs font-medium px-3 py-1 rounded-full">🔥 Aventura</span>
+          <button onclick="toggleWish(event,this)" class="absolute bottom-3 right-3 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-all duration-300" data-w="0">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </button>
+        </div>
+        <div class="p-5">
+          <h3 class="font-display font-bold text-navy text-xl mb-1.5 group-hover:text-sky transition-colors">Parapente en Jarabacoa</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-3">Vuela sobre los valles y montañas de Jarabacoa en una experiencia de parapente con instructores certificados.</p>
+          <div class="flex items-center gap-3 text-xs text-gray-400 mb-4 flex-wrap">
+            <span>📍 Jarabacoa</span><span>·</span><span>🪂 Vuelo</span><span>·</span><span>🏔️ Montaña</span>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div><p class="text-gray-400 text-xs">Precio</p><p class="font-display font-bold text-2xl text-navy">Consultar</p></div>
+            <span class="rip bg-navy hover:bg-sky text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-all duration-300 group-hover:bg-sky">Ver más →</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+  5. NOSOTROS
+═══════════════════════════ -->
+<section id="nosotros" class="bg-navy-50 py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Images collage -->
+      <div class="relative h-[500px] rv-l">
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/01/82636c93-493e-4f9d-83ce-0780c8ab4690.jpg" class="absolute top-0 left-0 w-72 h-80 object-cover rounded-3xl shadow-xl" alt="RYC Excursiones">
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/01/IMG_5483-scaled.jpg" class="absolute bottom-0 right-0 w-64 h-64 object-cover rounded-3xl shadow-xl border-4 border-white" alt="Excursiones">
+        <!-- Badge -->
+        <div class="absolute bottom-20 left-12 bg-navy text-white rounded-2xl p-4 shadow-xl float z-10">
+          <p class="font-display text-3xl font-bold text-gold">7+</p>
+          <p class="text-white/60 text-xs font-medium leading-tight mt-1">años creando<br>recuerdos</p>
+        </div>
+        <div class="absolute top-16 right-10 w-20 h-20 rounded-full border-2 border-dashed border-sky/30 animate-spin" style="animation-duration:18s;"></div>
+      </div>
+
+      <!-- Text + progress -->
+      <div class="rv-r">
+        <span class="inline-flex items-center gap-2 text-sky font-semibold text-sm uppercase tracking-widest mb-4"><span class="w-5 h-px bg-sky"></span>¿Por qué elegirnos?</span>
+        <h2 class="font-display text-4xl lg:text-5xl font-bold text-navy mb-6">Viaja con <em class="text-sky">confianza<br>y tranquilidad</em></h2>
+        <p class="text-gray-500 text-lg leading-relaxed mb-10">En R&C Bratini Excursiones transformamos cada viaje en una vivencia única. Con más de 7 años de experiencia, nos especializamos en diseñar excursiones que combinan aventura, cultura, naturaleza y confort.</p>
+
+        <!-- Progress bars -->
+        <div class="space-y-5 mb-10">
+          <div>
+            <div class="flex justify-between mb-2"><span class="text-navy font-semibold text-sm">Satisfacción del Cliente</span><span class="text-sky font-bold text-sm">98%</span></div>
+            <div class="h-2 bg-gray-100 rounded-full"><div class="h-full bg-gradient-to-r from-navy to-sky rounded-full pb" data-width="98" style="width:0%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2"><span class="text-navy font-semibold text-sm">Puntualidad en Excursiones</span><span class="text-sky font-bold text-sm">96%</span></div>
+            <div class="h-2 bg-gray-100 rounded-full"><div class="h-full bg-gradient-to-r from-navy to-sky rounded-full pb" data-width="96" style="width:0%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2"><span class="text-navy font-semibold text-sm">Seguridad y Confianza</span><span class="text-sky font-bold text-sm">100%</span></div>
+            <div class="h-2 bg-gray-100 rounded-full"><div class="h-full bg-gradient-to-r from-navy to-sky rounded-full pb" data-width="100" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <!-- Feature pills -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="flex items-center gap-3 p-3 rounded-2xl bg-white hover:bg-navy-50 transition-colors cursor-default">
+            <span class="w-9 h-9 bg-navy-100 rounded-xl flex items-center justify-center text-lg flex-shrink-0">🧑‍🏫</span>
+            <span class="text-navy font-semibold text-sm">Guías Certificados</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-2xl bg-white hover:bg-navy-50 transition-colors cursor-default">
+            <span class="w-9 h-9 bg-navy-100 rounded-xl flex items-center justify-center text-lg flex-shrink-0">🏅</span>
+            <span class="text-navy font-semibold text-sm">Agencia Certificada</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-2xl bg-white hover:bg-navy-50 transition-colors cursor-default">
+            <span class="w-9 h-9 bg-navy-100 rounded-xl flex items-center justify-center text-lg flex-shrink-0">💬</span>
+            <span class="text-navy font-semibold text-sm">Atención 24/7</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-2xl bg-white hover:bg-navy-50 transition-colors cursor-default">
+            <span class="w-9 h-9 bg-navy-100 rounded-xl flex items-center justify-center text-lg flex-shrink-0">💰</span>
+            <span class="text-navy font-semibold text-sm">Precios Accesibles</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+  6. TESTIMONIOS
+═══════════════════════════ -->
+<section class="bg-navy py-24 px-6 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-[.03]" style="background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:36px 36px;"></div>
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="text-center mb-14 rv">
+      <span class="inline-flex items-center gap-2 text-sky-light font-semibold text-sm uppercase tracking-widest mb-3"><span class="w-5 h-px bg-sky-light"></span>Testimonios<span class="w-5 h-px bg-sky-light"></span></span>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-white">Lo que dicen<br><em class="text-sky-light">nuestros viajeros</em></h2>
+    </div>
+    <div class="overflow-hidden">
+      <div class="ttrack flex gap-5" id="ttrack">
+        <div class="min-w-[300px] lg:min-w-[360px] bg-white/[.07] border border-white/10 rounded-3xl p-6 flex-shrink-0">
+          <div class="flex gap-0.5 mb-4 text-gold">★★★★★</div>
+          <p class="text-white/75 text-sm leading-relaxed mb-5">"La excursión de ballenas fue absolutamente mágica. El guía sabía exactamente dónde encontrarlas. ¡Sin duda la mejor experiencia de mi vida!"</p>
+          <div class="flex items-center gap-3"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=mx1&backgroundColor=b6e3f4" class="w-11 h-11 rounded-full bg-blue-100 border-2 border-sky/30" alt=""><div><p class="text-white font-semibold text-sm">María González</p><p class="text-white/40 text-xs">Ciudad de México 🇲🇽</p></div></div>
+        </div>
+        <div class="min-w-[300px] lg:min-w-[360px] bg-white/[.07] border border-white/10 rounded-3xl p-6 flex-shrink-0">
+          <div class="flex gap-0.5 mb-4 text-gold">★★★★★</div>
+          <p class="text-white/75 text-sm leading-relaxed mb-5">"Laguna Dudú fue impresionante. Todo estuvo perfectamente organizado: transporte, comida, guía. 100% recomendado para familias con niños."</p>
+          <div class="flex items-center gap-3"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=co2&backgroundColor=ffdfbf" class="w-11 h-11 rounded-full bg-orange-100 border-2 border-sky/30" alt=""><div><p class="text-white font-semibold text-sm">Carlos Rodríguez</p><p class="text-white/40 text-xs">Bogotá 🇨🇴</p></div></div>
+        </div>
+        <div class="min-w-[300px] lg:min-w-[360px] bg-white/[.07] border border-white/10 rounded-3xl p-6 flex-shrink-0">
+          <div class="flex gap-0.5 mb-4 text-gold">★★★★★</div>
+          <p class="text-white/75 text-sm leading-relaxed mb-5">"Viajé sola por primera vez y me sentí completamente segura. La atención personalizada fue increíble desde antes de llegar hasta el final."</p>
+          <div class="flex items-center gap-3"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=ar3&backgroundColor=c0aede" class="w-11 h-11 rounded-full bg-purple-100 border-2 border-sky/30" alt=""><div><p class="text-white font-semibold text-sm">Sofía Herrera</p><p class="text-white/40 text-xs">Buenos Aires 🇦🇷</p></div></div>
+        </div>
+        <div class="min-w-[300px] lg:min-w-[360px] bg-white/[.07] border border-white/10 rounded-3xl p-6 flex-shrink-0">
+          <div class="flex gap-0.5 mb-4 text-gold">★★★★★</div>
+          <p class="text-white/75 text-sm leading-relaxed mb-5">"El tour de fin de semana fue una revelación. Vimos partes del país que jamás hubiéramos encontrado solos. ¡Cinco estrellas sin dudarlo!"</p>
+          <div class="flex items-center gap-3"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=us4&backgroundColor=d1f0d1" class="w-11 h-11 rounded-full bg-green-100 border-2 border-sky/30" alt=""><div><p class="text-white font-semibold text-sm">Pedro Martínez</p><p class="text-white/40 text-xs">Miami, FL 🇺🇸</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center justify-center gap-4 mt-8">
+      <button onclick="tSlide(-1)" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-navy transition-all">&#8592;</button>
+      <div class="flex gap-2" id="tdots">
+        <button onclick="tGo(0)" class="w-2.5 h-2.5 rounded-full bg-white"></button>
+        <button onclick="tGo(1)" class="w-2.5 h-2.5 rounded-full bg-white/30"></button>
+        <button onclick="tGo(2)" class="w-2.5 h-2.5 rounded-full bg-white/30"></button>
+        <button onclick="tGo(3)" class="w-2.5 h-2.5 rounded-full bg-white/30"></button>
+      </div>
+      <button onclick="tSlide(1)" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-navy transition-all">&#8594;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+  7. GALERÍA
+═══════════════════════════ -->
+<section id="galeria" class="bg-white py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12 rv">
+      <span class="inline-flex items-center gap-2 text-sky font-semibold text-sm uppercase tracking-widest mb-3"><span class="w-5 h-px bg-sky"></span>Galería<span class="w-5 h-px bg-sky"></span></span>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-navy">Momentos <em class="text-sky">reales</em></h2>
+      <p class="text-gray-500 mt-3">Haz clic en las imágenes para verlas en detalle</p>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 rv">
+      <div class="col-span-2 row-span-2 iz rounded-3xl overflow-hidden cursor-pointer" style="height:440px" onclick="openLB(this)">
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/01/woman-traveling-in-nantes-city-france-2025-03-17-13-50-03-utc2-e1743309441820.webp" class="w-full h-full object-cover" alt="Viajera RYC">
+      </div>
+      <div class="iz rounded-3xl overflow-hidden cursor-pointer h-52 lg:h-[212px]" onclick="openLB(this)">
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/02/BAllena-300x350.jpg" class="w-full h-full object-cover" alt="Ballenas">
+      </div>
+      <div class="iz rounded-3xl overflow-hidden cursor-pointer h-52 lg:h-[212px]" onclick="openLB(this)">
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/02/Jarabacoa-parapente-300x350.jpg" class="w-full h-full object-cover" alt="Parapente">
+      </div>
+      <div class="iz rounded-3xl overflow-hidden cursor-pointer h-52 lg:h-[212px]" onclick="openLB(this)">
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/02/Buggies-300x350.jpg" class="w-full h-full object-cover" alt="Buggies">
+      </div>
+      <div class="iz rounded-3xl overflow-hidden cursor-pointer h-52 lg:h-[212px]" onclick="openLB(this)">
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/02/Jarabacoa-Full-Day-300x350.jpg" class="w-full h-full object-cover" alt="Jarabacoa">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div id="lb" onclick="closeLB()">
+  <button class="absolute top-5 right-5 text-white bg-white/10 w-11 h-11 rounded-full flex items-center justify-center hover:bg-white/25 transition-colors text-xl z-10">✕</button>
+  <img id="lbImg" src="" alt="">
+</div>
+
+<!-- ═══════════════════════════
+  8. FAQ
+═══════════════════════════ -->
+<section id="faq" class="bg-navy-50 py-24 px-6">
+  <div class="max-w-2xl mx-auto">
+    <div class="text-center mb-12 rv">
+      <span class="inline-flex items-center gap-2 text-sky font-semibold text-sm uppercase tracking-widest mb-3"><span class="w-5 h-px bg-sky"></span>FAQ</span>
+      <h2 class="font-display text-4xl font-bold text-navy">Preguntas <em class="text-sky">frecuentes</em></h2>
+    </div>
+    <div class="space-y-3 rv">
+      <div class="acc-item bg-white rounded-2xl shadow-sm overflow-hidden">
+        <button onclick="toggleAcc(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors">
+          <span class="font-semibold text-navy text-sm">¿Con cuánta anticipación debo reservar?</span>
+          <span class="acc-icon text-sky text-xl font-light ml-4 flex-shrink-0">+</span>
+        </button>
+        <div class="acc-body"><p class="text-gray-500 text-sm leading-relaxed px-5 pb-5">Recomendamos reservar con 48–72 horas de anticipación. Para el avistamiento de ballenas en temporada (enero–marzo), idealmente con 1 semana de antelación.</p></div>
+      </div>
+      <div class="acc-item bg-white rounded-2xl shadow-sm overflow-hidden">
+        <button onclick="toggleAcc(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors">
+          <span class="font-semibold text-navy text-sm">¿El transporte está incluido?</span>
+          <span class="acc-icon text-sky text-xl font-light ml-4 flex-shrink-0">+</span>
+        </button>
+        <div class="acc-body"><p class="text-gray-500 text-sm leading-relaxed px-5 pb-5">Sí, la mayoría de excursiones incluyen transporte desde Santo Domingo. El punto de recogida se especifica al momento de la reserva.</p></div>
+      </div>
+      <div class="acc-item bg-white rounded-2xl shadow-sm overflow-hidden">
+        <button onclick="toggleAcc(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors">
+          <span class="font-semibold text-navy text-sm">¿Cuál es la política de cancelación?</span>
+          <span class="acc-icon text-sky text-xl font-light ml-4 flex-shrink-0">+</span>
+        </button>
+        <div class="acc-body">
+          <p class="text-gray-500 text-sm leading-relaxed px-5 pb-3">Cancelaciones con más de 72 horas: reembolso completo. Menos de 72 horas: cargo del 50%.</p>
+          <p class="px-5 pb-5"><a href="https://rycexcursionesrd.com/politica-de-cancelacion/" class="text-sky text-sm font-medium hover:underline">Ver política completa →</a></p>
+        </div>
+      </div>
+      <div class="acc-item bg-white rounded-2xl shadow-sm overflow-hidden">
+        <button onclick="toggleAcc(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors">
+          <span class="font-semibold text-navy text-sm">¿Son aptas para niños las excursiones?</span>
+          <span class="acc-icon text-sky text-xl font-light ml-4 flex-shrink-0">+</span>
+        </button>
+        <div class="acc-body"><p class="text-gray-500 text-sm leading-relaxed px-5 pb-5">La mayoría de nuestras excursiones son familiares. Algunas actividades extremas (parapente, buggies) tienen restricciones. Consulta cada paquete para detalles específicos.</p></div>
+      </div>
+      <div class="acc-item bg-white rounded-2xl shadow-sm overflow-hidden">
+        <button onclick="toggleAcc(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors">
+          <span class="font-semibold text-navy text-sm">¿Qué métodos de pago aceptan?</span>
+          <span class="acc-icon text-sky text-xl font-light ml-4 flex-shrink-0">+</span>
+        </button>
+        <div class="acc-body"><p class="text-gray-500 text-sm leading-relaxed px-5 pb-5">Aceptamos efectivo (USD y RD$), tarjetas de crédito/débito y transferencias bancarias. También plataformas digitales. Consulta al momento de reservar.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+  9. CTA
+═══════════════════════════ -->
+<section class="hero-bg relative py-28 px-6 overflow-hidden">
+  <div class="absolute inset-0 opacity-[.06]" style="background-image:linear-gradient(rgba(255,255,255,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.4) 1px,transparent 1px);background-size:60px 60px;"></div>
+  <div id="ptcs2" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+  <div class="relative z-10 max-w-3xl mx-auto text-center rv">
+    <span class="inline-flex items-center gap-2 text-white/60 font-semibold text-sm uppercase tracking-widest mb-6"><span class="w-5 h-px bg-white/60"></span>Empieza hoy<span class="w-5 h-px bg-white/60"></span></span>
+    <h2 class="font-display text-4xl lg:text-6xl font-bold text-white mb-6">¿Listo para tu<br>próxima <em class="text-gold">aventura?</em></h2>
+    <p class="text-white/70 text-lg leading-relaxed mb-10 max-w-xl mx-auto">Reserva hoy y déjanos guiarte por los destinos más espectaculares de la República Dominicana.</p>
+    <div class="flex flex-wrap gap-4 justify-center">
+      <a href="https://rycexcursionesrd.com/excursiones-2/" class="rip flex items-center gap-2 bg-gold hover:bg-gold-light text-navy font-bold text-base px-8 py-4 rounded-full transition-all duration-300 hover:shadow-xl hover:shadow-gold/30 hover:-translate-y-1">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Explorar Paquetes
+      </a>
+      <a href="https://wa.me/18094563728" target="_blank" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold text-base px-8 py-4 rounded-full transition-all duration-300 hover:-translate-y-1 backdrop-blur-sm">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.121.556 4.11 1.528 5.838L0 24l6.338-1.528A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-5.031-1.384l-.36-.215-3.734.979.999-3.645-.236-.374A9.785 9.785 0 012.182 12C2.182 6.567 6.567 2.182 12 2.182S21.818 6.567 21.818 12 17.433 21.818 12 21.818z"/></svg>
+        Escríbenos por WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════
+  10. FOOTER + CONTACTO
+═══════════════════════════ -->
+<footer id="contacto" class="bg-navy-900 pt-20 pb-8 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-10 mb-16">
+
+      <!-- Brand -->
+      <div>
+        <img src="https://rycexcursionesrd.com/wp-content/uploads/2026/01/RYC-excursiones-logo-w-300x144.png" class="h-12 mb-4" alt="RYC Excursiones">
+        <p class="text-white/45 text-sm leading-relaxed mb-5">Más de 7 años creando experiencias de viaje memorables en la República Dominicana. Tu aventura es nuestra pasión.</p>
+        <div class="flex gap-2">
+          <a href="https://www.facebook.com/people/RC-Bratini-Excursiones/100063601598022/" target="_blank" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/50 hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-all duration-300 text-sm font-bold">f</a>
+          <a href="https://www.instagram.com/rycexcursiones/" target="_blank" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/50 hover:bg-pink-600 hover:border-pink-600 hover:text-white transition-all duration-300 text-xs">ig</a>
+          <a href="https://wa.me/18094563728" target="_blank" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/50 hover:bg-green-500 hover:border-green-500 hover:text-white transition-all duration-300">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.121.556 4.11 1.528 5.838L0 24l6.338-1.528A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-5.031-1.384l-.36-.215-3.734.979.999-3.645-.236-.374A9.785 9.785 0 012.182 12C2.182 6.567 6.567 2.182 12 2.182S21.818 6.567 21.818 12 17.433 21.818 12 21.818z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Servicios -->
+      <div>
+        <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Servicios</h4>
+        <ul class="space-y-3">
+          <li><a href="https://rycexcursionesrd.com/product-category/excursiones/" class="text-white/45 hover:text-white text-sm transition-colors hover:translate-x-1 inline-block duration-200">Excursiones</a></li>
+          <li><a href="https://rycexcursionesrd.com/product-category/la-vuelta-a-rd/" class="text-white/45 hover:text-white text-sm transition-colors hover:translate-x-1 inline-block duration-200">Tours de Fin de Semana</a></li>
+          <li><a href="https://rycexcursionesrd.com/transport-2/" class="text-white/45 hover:text-white text-sm transition-colors hover:translate-x-1 inline-block duration-200">Transporte</a></li>
+          <li><a href="https://rycexcursionesrd.com/product-category/resort/" class="text-white/45 hover:text-white text-sm transition-colors hover:translate-x-1 inline-block duration-200">Resort</a></li>
+          <li><a href="https://rycexcursionesrd.com/product-category/boletos-aereos/" class="text-white/45 hover:text-white text-sm transition-colors hover:translate-x-1 inline-block duration-200">Boletos Aéreos</a></li>
+          <li><a href="https://rycexcursionesrd.com/product-category/tours-internacionales/" class="text-white/45 hover:text-white text-sm transition-colors hover:translate-x-1 inline-block duration-200">Tours Internacionales</a></li>
+        </ul>
+      </div>
+
+      <!-- Info legal -->
+      <div>
+        <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Empresa</h4>
+        <ul class="space-y-3">
+          <li><a href="https://rycexcursionesrd.com/" class="text-white/45 hover:text-white text-sm transition-colors hover:translate-x-1 inline-block duration-200">Inicio</a></li>
+          <li><a href="https://rycexcursionesrd.com/excursiones-2/" class="text-white/45 hover:text-white text-sm transition-colors hover:translate-x-1 inline-block duration-200">Todas las Excursiones</a></li>
+          <li><a href="https://rycexcursionesrd.com/politica-de-cancelacion/" class="text-white/45 hover:text-white text-sm transition-colors hover:translate-x-1 inline-block duration-200">Política de Cancelación</a></li>
+          <li><a href="https://rycexcursionesrd.com/politica-de-viaje/" class="text-white/45 hover:text-white text-sm transition-colors hover:translate-x-1 inline-block duration-200">Política de Viaje</a></li>
+          <li><a href="https://rycexcursionesrd.com/contacto/" class="text-white/45 hover:text-white text-sm transition-colors hover:translate-x-1 inline-block duration-200">Contacto</a></li>
+        </ul>
+      </div>
+
+      <!-- Contacto -->
+      <div>
+        <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Contáctanos</h4>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3"><span class="text-sky mt-0.5 flex-shrink-0">📍</span><span class="text-white/45 text-sm leading-relaxed">Plaza Coral II, Local E-5<br>Av. Gustavo Mejía Ricart 273<br>Santo Domingo, RD</span></div>
+          <div class="flex items-center gap-3"><span class="text-sky flex-shrink-0">💬</span><a href="https://wa.me/18094563728" class="text-white/45 hover:text-green-400 text-sm transition-colors">Escríbenos por WhatsApp</a></div>
+          <div class="flex items-center gap-3"><span class="text-sky flex-shrink-0">📸</span><a href="https://www.instagram.com/rycexcursiones/" target="_blank" class="text-white/45 hover:text-white text-sm transition-colors">@rycexcursiones</a></div>
+          <div class="flex items-center gap-3"><span class="text-sky flex-shrink-0">👍</span><a href="https://www.facebook.com/people/RC-Bratini-Excursiones/100063601598022/" target="_blank" class="text-white/45 hover:text-white text-sm transition-colors">RC Bratini Excursiones</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/8 pt-8 flex flex-wrap justify-between items-center gap-4">
+      <p class="text-white/25 text-sm">© 2025 R&C Bratini Excursiones. Todos los derechos reservados.</p>
+      <p class="text-white/15 text-xs">Hecho con ❤️ para la República Dominicana 🇩🇴</p>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp FAB -->
+<a href="https://wa.me/18094563728" target="_blank" class="wa fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 hover:bg-green-400 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110 hover:-translate-y-1">
+  <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.121.556 4.11 1.528 5.838L0 24l6.338-1.528A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-5.031-1.384l-.36-.215-3.734.979.999-3.645-.236-.374A9.785 9.785 0 012.182 12C2.182 6.567 6.567 2.182 12 2.182S21.818 6.567 21.818 12 17.433 21.818 12 21.818z"/></svg>
+</a>
+
+<script>
+// ── HERO ANIMATIONS
+const fas = `@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}`;
+const st = document.createElement('style'); st.textContent = fas; document.head.appendChild(st);
+
+// ── CURSOR
+const cur = document.getElementById('cur'), curR = document.getElementById('curR');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX+'px'; cur.style.top = e.clientY+'px';
+  curR.style.left = e.clientX+'px'; curR.style.top = e.clientY+'px';
+});
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
+});
+
+// ── SCROLL PROGRESS
+window.addEventListener('scroll', () => {
+  const d = document.documentElement, t = window.scrollY, h = d.scrollHeight - d.clientHeight;
+  document.getElementById('sp').style.width = (t/h*100)+'%';
+});
+
+// ── NAVBAR SCROLL
+const nav = document.getElementById('nav');
+const lw = document.getElementById('logo-w'), lb_logo = document.getElementById('logo-b');
+const nls = document.querySelectorAll('.nl');
+const hb = document.getElementById('hb');
+window.addEventListener('scroll', () => {
+  const s = window.scrollY > 70;
+  nav.classList.toggle('nav-over', !s);
+  nav.classList.toggle('nav-solid', s);
+  lw.classList.toggle('hidden', s);
+  lb_logo.classList.toggle('hidden', !s);
+  hb.classList.toggle('text-white', !s);
+  hb.classList.toggle('text-navy', s);
+});
+
+// ── MOBILE MENU
+function openMM()  { document.getElementById('mm').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
+function closeMM() { document.getElementById('mm').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+
+// ── PARTICLES
+function spawnP(cid) {
+  const c = document.getElementById(cid);
+  if(!c) return;
+  const p = document.createElement('div');
+  const s = Math.random()*6+3;
+  p.className = 'ptc';
+  p.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;animation:rise ${Math.random()*8+6}s ${Math.random()*4}s linear forwards;opacity:${Math.random()*.2+.05};`;
+  c.appendChild(p);
+  setTimeout(()=>p.remove(),18000);
+}
+const fa2 = `@keyframes rise{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.8}90%{opacity:.6}100%{transform:translateY(-80px) scale(1);opacity:0}}`;
+const st2 = document.createElement('style'); st2.textContent = fa2; document.head.appendChild(st2);
+setInterval(()=>{spawnP('ptcs');spawnP('ptcs2');}, 700);
+for(let i=0;i<10;i++) { setTimeout(()=>{spawnP('ptcs');spawnP('ptcs2');}, i*300); }
+
+// ── REVEAL
+const rvEls = document.querySelectorAll('.rv, .rv-l, .rv-r');
+const rvObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      const d = ['d1','d2','d3','d4','d5','d6'].findIndex(c => e.target.classList.contains(c));
+      setTimeout(()=>e.target.classList.add('on'), d>=0 ? (d+1)*100 : 0);
+      rvObs.unobserve(e.target);
+    }
+  });
+},{threshold:.1});
+rvEls.forEach(el=>rvObs.observe(el));
+
+// ── COUNT UP
+document.querySelectorAll('.count-up').forEach(el => {
+  const obs = new IntersectionObserver(entries => {
+    if(!entries[0].isIntersecting) return;
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix||'';
+    const dec = parseInt(el.dataset.decimal)||0;
+    let cur2 = 0;
+    const step = target/(1800/16);
+    const tick = ()=>{
+      cur2 = Math.min(cur2+step, target);
+      el.textContent = (dec ? cur2.toFixed(dec) : Math.floor(cur2)) + suffix;
+      if(cur2<target) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    obs.unobserve(el);
+  },{threshold:.5});
+  obs.observe(el);
+});
+
+// ── PROGRESS BARS
+document.querySelectorAll('.pb').forEach(el => {
+  const obs = new IntersectionObserver(entries => {
+    if(entries[0].isIntersecting) {
+      setTimeout(()=>el.style.width=el.dataset.width+'%', 200);
+      obs.unobserve(el);
+    }
+  },{threshold:.3});
+  obs.observe(el);
+});
+
+// ── FILTER TABS
+function filterTab(cat, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
+  btn.classList.add('tab-active');
+  document.querySelectorAll('#pkgGrid > a').forEach(card => {
+    const cats = card.getAttribute('data-cat') || '';
+    const show = cat === 'all' || cats.includes(cat);
+    card.style.transition = 'opacity .3s, transform .3s';
+    if(show) {
+      card.style.opacity = '1'; card.style.transform = ''; card.style.display = '';
+    } else {
+      card.style.opacity = '0'; card.style.transform = 'scale(.95)';
+      setTimeout(()=>{ if(!cats.includes(cat) && cat!=='all') card.style.display='none'; }, 300);
+    }
+  });
+}
+
+// ── WISHLIST
+function toggleWish(e, btn) {
+  e.preventDefault(); e.stopPropagation();
+  const w = btn.dataset.w === '1';
+  btn.dataset.w = w ? '0' : '1';
+  btn.innerHTML = w
+    ? `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>`
+    : `<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>`;
+  btn.classList.toggle('bg-red-500', !w);
+  btn.classList.toggle('text-white', !w);
+}
+
+// ── ACCORDION
+function toggleAcc(btn) {
+  const item = btn.closest('.acc-item'), body = item.querySelector('.acc-body'), open = body.classList.contains('open');
+  document.querySelectorAll('.acc-item').forEach(i => { i.classList.remove('acc-open'); i.querySelector('.acc-body').classList.remove('open'); });
+  if(!open) { item.classList.add('acc-open'); body.classList.add('open'); }
+}
+
+// ── LIGHTBOX
+function openLB(el) {
+  document.getElementById('lbImg').src = el.querySelector('img').src;
+  document.getElementById('lb').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLB() { document.getElementById('lb').classList.remove('open'); document.body.style.overflow = ''; }
+
+// ── TESTIMONIALS
+let tPos = 0;
+const tCount = 4;
+function tSlide(d) { tPos = (tPos+d+tCount)%tCount; tUpdate(); }
+function tGo(i) { tPos = i; tUpdate(); }
+function tUpdate() {
+  const cw = window.innerWidth > 1024 ? 360+20 : 300+20;
+  document.getElementById('ttrack').style.transform = `translateX(-${tPos*cw}px)`;
+  document.querySelectorAll('#tdots button').forEach((d,i) => {
+    d.className = `w-2.5 h-2.5 rounded-full transition-all ${i===tPos?'bg-white w-5':'bg-white/30'}`;
+  });
+}
+setInterval(()=>tSlide(1), 5500);
+
+// ── DEST SELECT
+function goDestino() {
+  const v = document.getElementById('destSelect').value;
+  if(v) window.location.href = v; else window.location.href = 'https://rycexcursionesrd.com/excursiones-2/';
+}
+
+// ── RIPPLE
+document.querySelectorAll('.rip').forEach(btn => {
+  btn.addEventListener('click', e => {
+    const r = btn.getBoundingClientRect(), x = e.clientX-r.left, y = e.clientY-r.top;
+    const rip = document.createElement('span');
+    rip.style.cssText=`position:absolute;border-radius:50%;background:rgba(255,255,255,.3);width:6px;height:6px;left:${x-3}px;top:${y-3}px;pointer-events:none;animation:ripple .6s ease-out forwards;`;
+    const st3=document.createElement('style'); st3.textContent=`@keyframes ripple{to{transform:scale(40);opacity:0}}`; document.head.appendChild(st3);
+    btn.style.position='relative'; btn.style.overflow='hidden';
+    btn.appendChild(rip); setTimeout(()=>rip.remove(),700);
+  });
+});
+</script>
+</body>
+</html>
