@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galería | RYC Excursiones — República Dominicana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,700;0,900;1,300&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--cyan:#003087;--cyan-dim:rgba(0,48,135,0.12);--dark:#080808;--dark2:#101010;--dark3:#181818}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--dark);color:#fff;overflow-x:hidden;cursor:none}
+#cur{width:10px;height:10px;background:var(--cyan);border-radius:50%;position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:screen}
+#cur-ring{width:38px;height:38px;border:1.5px solid rgba(0,48,135,0.45);border-radius:50%;position:fixed;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);transition:width .35s,height .35s,border-color .3s}
+@media(max-width:1024px){#cur,#cur-ring{display:none}body{cursor:auto}}
+#loader{position:fixed;inset:0;z-index:10000;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}
+#loader.hide{opacity:0;visibility:hidden}
+.lbar-wrap{width:200px;height:2px;background:rgba(255,255,255,.08);margin-top:22px;border-radius:2px;overflow:hidden}
+.lbar{height:100%;background:var(--cyan);width:0;animation:lfill 1.8s ease forwards}
+@keyframes lfill{to{width:100%}}
+@keyframes lpulse{0%,100%{opacity:.5}50%{opacity:1}}
+#nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:28px 56px;transition:all .4s}
+#nav.sc{background:rgba(8,8,8,.97);backdrop-filter:blur(20px);padding:15px 56px;border-bottom:1px solid rgba(0,48,135,0.09);box-shadow:0 0 40px rgba(0,0,0,.6)}
+.nav-logo img{height:52px;filter:brightness(0) invert(1);transition:height .3s}
+#nav.sc .nav-logo img{height:50px}
+.nav-links{display:flex;align-items:center;gap:38px}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none;position:relative;transition:color .3s}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.nav-links a:hover{color:#fff}
+.nav-links a:hover::after,.nav-links a.on::after{transform:scaleX(1)}
+.nav-links a.on{color:var(--cyan)}
+.btn-nav{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;letter-spacing:3px;text-transform:uppercase;background:var(--cyan);color:#fff;padding:12px 30px;border:none;cursor:pointer;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:all .3s;text-decoration:none;display:inline-block}
+.btn-nav:hover{background:#fff;color:var(--dark);transform:translateY(-2px)}
+.hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:white}
+.sec-tag{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sec-tag::before{content:'//';opacity:.4}
+
+/* PAGE HERO */
+.gal-hdr{padding:170px 56px 56px}
+.gal-hdr h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(70px,10vw,130px);line-height:.87;letter-spacing:4px;color:#fff}
+.gal-hdr h1 .ol{-webkit-text-stroke:2px rgba(255,255,255,.2);color:transparent}
+.gal-hdr h1 .cy{color:var(--cyan)}
+.gal-hdr p{font-size:16px;font-weight:300;color:rgba(255,255,255,.38);margin-top:14px;line-height:1.8;max-width:480px}
+
+/* FILTER */
+.filter-bar{padding:0 56px 40px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-right:8px}
+.fbtn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;background:transparent;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.45);padding:9px 22px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:all .25s}
+.fbtn:hover,.fbtn.on{background:var(--cyan);border-color:var(--cyan);color:#fff}
+
+/* GALLERY STRIPS — same as index */
+.gal-sec{background:var(--dark);padding:0 0 80px}
+.gstrip{display:grid;grid-template-columns:1.3fr .8fr 1fr .7fr 1.2fr;gap:3px;height:360px}
+.gstrip2{display:grid;grid-template-columns:.7fr 1.2fr 1fr 1.3fr;gap:3px;height:260px;margin-top:3px}
+.gstrip3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;height:300px;margin-top:3px}
+.gi{overflow:hidden;position:relative;cursor:pointer}
+.gi img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s,filter .4s;filter:brightness(.72) saturate(.78)}
+.gi:hover img{transform:scale(1.09);filter:brightness(1) saturate(1.1)}
+.gi-ov{position:absolute;inset:0;background:rgba(0,48,135,0);display:flex;align-items:center;justify-content:center;transition:background .3s;flex-direction:column;gap:8px}
+.gi:hover .gi-ov{background:rgba(0,48,135,0.12)}
+.gi-ov i{font-size:26px;color:#fff;opacity:0;transform:scale(.6);transition:all .3s}
+.gi:hover .gi-ov i{opacity:1;transform:scale(1)}
+.gi-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0);transition:all .3s;margin-top:8px}
+.gi:hover .gi-lbl{color:rgba(255,255,255,.75)}
+
+/* LIGHTBOX */
+.lb{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.95);align-items:center;justify-content:center}
+.lb.open{display:flex}
+.lb-inner{max-width:900px;width:92%;position:relative}
+.lb-img{width:100%;max-height:78vh;object-fit:contain;display:block}
+.lb-cap{padding:16px 0 0;display:flex;justify-content:space-between;align-items:center}
+.lb-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.lb-close{position:absolute;top:-44px;right:0;background:var(--cyan);border:none;color:#fff;width:36px;height:36px;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.lb-close:hover{background:#fff;color:var(--dark)}
+.lb-nav{background:rgba(0,48,135,0.4);border:none;color:#fff;width:48px;height:48px;font-size:18px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:background .2s}
+.lb-nav:hover{background:var(--cyan)}
+
+/* GAL CTA */
+.gal-cta{text-align:center;padding:64px 56px;border-top:1px solid rgba(255,255,255,.04)}
+.gal-cta .sec-tag{justify-content:center;margin-bottom:14px}
+.gal-cta h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,6vw,80px);letter-spacing:3px;line-height:.9;margin-bottom:22px}
+.gal-cta h2 .cy{color:var(--cyan)}
+.gal-cta p{font-size:15px;color:rgba(255,255,255,.38);font-weight:300;max-width:420px;margin:0 auto 36px;line-height:1.7}
+.btn-g{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;background:transparent;border:1.5px solid rgba(255,255,255,.22);color:#fff;padding:16px 42px;cursor:pointer;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);transition:all .3s;text-decoration:none;display:inline-block}
+.btn-g:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn-wa{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;letter-spacing:3px;text-transform:uppercase;background:#25d366;color:#fff;padding:17px 50px;border:none;cursor:pointer;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:10px}
+.btn-wa:hover{background:#1dba5a;transform:translateY(-3px)}
+footer{background:var(--dark2);border-top:1px solid rgba(255,255,255,.045);padding:54px 56px 38px}
+.fi{display:flex;justify-content:space-between;align-items:center;margin-bottom:38px;gap:32px;flex-wrap:wrap}
+.flogo img{height:46px;filter:brightness(0) invert(1);opacity:.75}
+.flinks{display:flex;gap:28px;flex-wrap:wrap}
+.flinks a{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.3);text-decoration:none;transition:color .3s}
+.flinks a:hover{color:var(--cyan)}
+.fso{display:flex;gap:12px}
+.fso a{width:40px;height:40px;border:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:center;font-size:15px;color:rgba(255,255,255,.32);transition:all .3s;text-decoration:none;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%)}
+.fso a:hover{background:var(--cyan);border-color:var(--cyan);color:#fff}
+.fb{display:flex;justify-content:space-between;align-items:center;padding-top:26px;border-top:1px solid rgba(255,255,255,.045);flex-wrap:wrap;gap:10px}
+.fb p{font-size:11px;color:rgba(255,255,255,.18);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px}
+.pwrd{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.15)}
+.pwrd a{color:rgba(0,48,135,0.48);font-weight:700;text-decoration:none;transition:color .3s}
+.pwrd a:hover{color:var(--cyan)}
+.rv{opacity:0;transform:translateY(30px);transition:all .8s ease}
+.rv.vi{opacity:1;transform:translateY(0)}
+@media(max-width:1024px){
+  #nav{padding:18px 24px}#nav.sc{padding:13px 24px}
+  .nav-links{display:none}.hamburger{display:flex}
+  .gal-hdr{padding:130px 24px 36px}
+  .filter-bar{padding:0 24px 28px}
+  .gstrip{grid-template-columns:repeat(3,1fr);height:200px}
+  .gstrip2{grid-template-columns:repeat(2,1fr);height:180px}
+  .gstrip3{grid-template-columns:repeat(2,1fr);height:220px}
+  .gal-cta{padding:48px 24px}
+  footer{padding:44px 24px 28px}
+  .fi{flex-direction:column;align-items:flex-start}
+  .fb{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:600px){
+  .gstrip{grid-template-columns:repeat(2,1fr);height:160px}
+  .gstrip2,.gstrip3{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-ring"></div>
+<div id="loader">
+  <img src="images/logo.png" alt="RYC Excursiones" style="height:80px;filter:brightness(0) invert(1);margin-bottom:28px;animation:lpulse 1.4s ease-in-out infinite;">
+  <div class="lbar-wrap"><div class="lbar"></div></div>
+</div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo"><img src="images/logo.png" alt="RYC Excursiones"></a>
+  <div class="nav-links">
+    <a href="index.html">Inicio</a>
+    <a href="excursiones.html">Excursiones</a>
+    <a href="galeria.html" class="on">Galería</a>
+    <a href="nosotros.html">Nosotros</a>
+    <a href="contacto.html">Contacto</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <button class="hamburger" id="hbg" aria-label="Menú"><span></span><span></span><span></span></button>
+    <a href="https://wa.me/18492650340" target="_blank" class="btn-nav">Reservar Ahora</a>
+  </div>
+</nav>
+
+<div class="gal-hdr rv">
+  <div class="sec-tag">Momentos Reales</div>
+  <h1>FOTOS DE<br><span class="cy">NUESTROS</span><br><span class="ol">TOURS</span></h1>
+  <p>Imágenes capturadas en nuestras excursiones. La próxima foto puede ser la tuya.</p>
+</div>
+
+<div class="filter-bar rv">
+  <span class="filter-lbl">// Filtrar</span>
+  <button class="fbtn on">Todas</button>
+  <button class="fbtn">Playa &amp; Mar</button>
+  <button class="fbtn">Aventura</button>
+  <button class="fbtn">Naturaleza</button>
+  <button class="fbtn">Grupos</button>
+</div>
+
+<section class="gal-sec">
+  <!-- STRIP 1 -->
+  <div class="gstrip rv">
+    <div class="gi" onclick="openLb(this,'images/tour-cultural.jpeg','Tour Cultural — Santo Domingo')">
+      <img src="images/tour-cultural.jpeg" alt="Tour cultural">
+      <div class="gi-ov"><i class="fas fa-expand"></i><span class="gi-lbl">Cultural</span></div>
+    </div>
+    <div class="gi" onclick="openLb(this,'images/parapente-vuelo.jpeg','Parapente — Jarabacoa')">
+      <img src="images/parapente-vuelo.jpeg" alt="Parapente">
+      <div class="gi-ov"><i class="fas fa-expand"></i><span class="gi-lbl">Adrenalina</span></div>
+    </div>
+    <div class="gi" onclick="openLb(this,'images/cascada-natural.jpeg','Cascada Natural — Samaná')">
+      <img src="images/cascada-natural.jpeg" alt="Cascada">
+      <div class="gi-ov"><i class="fas fa-expand"></i><span class="gi-lbl">Naturaleza</span></div>
+    </div>
+    <div class="gi" onclick="openLb(this,'images/parapente-ciudad.jpeg','Parapente Ciudad — Jarabacoa')">
+      <img src="images/parapente-ciudad.jpeg" alt="Parapente ciudad">
+      <div class="gi-ov"><i class="fas fa-expand"></i><span class="gi-lbl">Adrenalina</span></div>
+    </div>
+    <div class="gi" onclick="openLb(this,'images/grupo-tour.jpeg','Grupo Tour — RYC Excursiones')">
+      <img src="images/grupo-tour.jpeg" alt="Grupo tour">
+      <div class="gi-ov"><i class="fas fa-expand"></i><span class="gi-lbl">Grupos</span></div>
+    </div>
+  </div>
+  <!-- STRIP 2 -->
+  <div class="gstrip2 rv" style="transition-delay:.1s">
+    <div class="gi" onclick="openLb(this,'images/naturaleza-rd.jpeg','Naturaleza RD — Fauna y Flora')">
+      <img src="images/naturaleza-rd.jpeg" alt="Naturaleza">
+      <div class="gi-ov"><i class="fas fa-expand"></i><span class="gi-lbl">Naturaleza</span></div>
+    </div>
+    <div class="gi" onclick="openLb(this,'images/jarabacoa-paisaje.jpeg','Jarabacoa — Valle Verde')">
+      <img src="images/jarabacoa-paisaje.jpeg" alt="Jarabacoa">
+      <div class="gi-ov"><i class="fas fa-expand"></i><span class="gi-lbl">Naturaleza</span></div>
+    </div>
+    <div class="gi" onclick="openLb(this,'images/buggy-punta-cana.jpeg','Buggy Off-Road — Punta Cana')">
+      <img src="images/buggy-punta-cana.jpeg" alt="Buggy">
+      <div class="gi-ov"><i class="fas fa-expand"></i><span class="gi-lbl">Adrenalina</span></div>
+    </div>
+    <div class="gi" onclick="openLb(this,'images/isla-saona.jpeg','Isla Saona — Aguas Cristalinas')">
+      <img src="images/isla-saona.jpeg" alt="Isla Saona">
+      <div class="gi-ov"><i class="fas fa-expand"></i><span class="gi-lbl">Playa &amp; Mar</span></div>
+    </div>
+  </div>
+  <!-- STRIP 3 -->
+  <div class="gstrip3 rv" style="transition-delay:.2s">
+    <div class="gi" onclick="openLb(this,'images/parapente-jarabacoa.jpeg','Parapente — Jarabacoa')">
+      <img src="images/parapente-jarabacoa.jpeg" alt="Parapente Jarabacoa">
+      <div class="gi-ov"><i class="fas fa-expand"></i><span class="gi-lbl">Adrenalina</span></div>
+    </div>
+    <div class="gi" onclick="openLb(this,'images/cascada-limon.jpeg','Cascada El Limón — Samaná')">
+      <img src="images/cascada-limon.jpeg" alt="Cascada El Limón">
+      <div class="gi-ov"><i class="fas fa-expand"></i><span class="gi-lbl">Naturaleza</span></div>
+    </div>
+    <div class="gi" onclick="openLb(this,'images/grupo-tour.jpeg','Tours Grupales — RYC Excursiones')">
+      <img src="images/grupo-tour.jpeg" alt="Grupo">
+      <div class="gi-ov"><i class="fas fa-expand"></i><span class="gi-lbl">Grupos</span></div>
+    </div>
+  </div>
+
+  <!-- GAL CTA -->
+  <div class="gal-cta rv">
+    <div class="sec-tag">¿Quieres salir en la galería?</div>
+    <h2>CREA TU<br>PROPIA <span class="cy">HISTORIA</span></h2>
+    <p>Reserva un tour con nosotros y vive experiencias que querrás fotografiar para siempre.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="https://wa.me/18492650340" target="_blank" class="btn-wa"><i class="fab fa-whatsapp"></i> Reservar</a>
+      <a href="excursiones.html" class="btn-g">Ver Tours →</a>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb" onclick="closeLb(event)">
+  <div class="lb-inner">
+    <button class="lb-close" onclick="closeLb()"><i class="fas fa-times"></i></button>
+    <img class="lb-img" id="lb-img" src="" alt="">
+    <div class="lb-cap">
+      <span class="lb-title" id="lb-title"></span>
+      <div style="display:flex;gap:8px">
+        <button class="lb-nav" onclick="lbNav(-1)"><i class="fas fa-chevron-left"></i></button>
+        <button class="lb-nav" onclick="lbNav(1)"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fi">
+    <a href="index.html" class="flogo"><img src="images/logo.png" alt="RYC Excursiones"></a>
+    <nav class="flinks">
+      <a href="index.html">Inicio</a><a href="excursiones.html">Excursiones</a>
+      <a href="galeria.html">Galería</a><a href="nosotros.html">Nosotros</a><a href="contacto.html">Contacto</a>
+    </nav>
+    <div class="fso">
+      <a href="https://www.instagram.com/rycexcursiones/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.facebook.com/rycexcursionesrd/?locale=es_LA" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://wa.me/18492650340" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    </div>
+  </div>
+  <div class="fb">
+    <p>© 2026 RYC Excursiones RD. Todos los derechos reservados.</p>
+    <p class="pwrd">Powered by <a href="https://growpilot.lat" target="_blank">Growpilot</a></p>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('hide'),1950));
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function animR(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animR);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='20px';cur.style.height='20px';ring.style.width='54px';ring.style.height='54px';ring.style.borderColor='rgba(0,48,135,0.8)';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';ring.style.width='38px';ring.style.height='38px';ring.style.borderColor='rgba(0,48,135,0.45)';});
+});
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',window.scrollY>60));
+const rvObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vi');rvObs.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>rvObs.observe(el));
+// Filter
+document.querySelectorAll('.fbtn').forEach(btn=>{
+  btn.addEventListener('click',()=>{document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');});
+});
+// Lightbox
+let lbItems=[];let lbIdx=0;
+function openLb(el,src,title){
+  lbItems=Array.from(document.querySelectorAll('.gi'));
+  lbIdx=lbItems.indexOf(el);
+  document.getElementById('lb-img').src=src;
+  document.getElementById('lb-title').textContent=title;
+  document.getElementById('lb').classList.add('open');
+}
+function closeLb(e){
+  if(!e||e.target.id==='lb'||e.target.closest('.lb-close')){document.getElementById('lb').classList.remove('open');}
+}
+function lbNav(dir){
+  lbIdx=(lbIdx+dir+lbItems.length)%lbItems.length;
+  const el=lbItems[lbIdx];
+  document.getElementById('lb-img').src=el.querySelector('img').src;
+  document.getElementById('lb-title').textContent=el.querySelector('img').alt;
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb();if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);});
+</script>
+</body>
+</html>

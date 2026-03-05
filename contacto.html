@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contacto | RYC Excursiones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;700&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--cyan:#003087;--dark:#080808;--dark2:#101010;--dark3:#181818}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--dark);color:#fff;overflow-x:hidden;cursor:none}
+#cur{width:10px;height:10px;background:var(--cyan);border-radius:50%;position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:screen}
+#cur-ring{width:38px;height:38px;border:1.5px solid rgba(0,48,135,0.45);border-radius:50%;position:fixed;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);transition:width .35s,height .35s,border-color .3s}
+@media(max-width:1024px){#cur,#cur-ring{display:none}body{cursor:auto}}
+#loader{position:fixed;inset:0;z-index:10000;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}
+#loader.hide{opacity:0;visibility:hidden}
+.lbar-wrap{width:200px;height:2px;background:rgba(255,255,255,.08);margin-top:22px;border-radius:2px;overflow:hidden}
+.lbar{height:100%;background:var(--cyan);width:0;animation:lfill 1.8s ease forwards}
+@keyframes lfill{to{width:100%}}
+@keyframes lpulse{0%,100%{opacity:.5}50%{opacity:1}}
+#nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:28px 56px;transition:all .4s}
+#nav.sc{background:rgba(8,8,8,.97);backdrop-filter:blur(20px);padding:15px 56px;border-bottom:1px solid rgba(0,48,135,0.09);box-shadow:0 0 40px rgba(0,0,0,.6)}
+.nav-logo img{height:52px;filter:brightness(0) invert(1);transition:height .3s}
+#nav.sc .nav-logo img{height:50px}
+.nav-links{display:flex;align-items:center;gap:38px}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none;position:relative;transition:color .3s}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.nav-links a:hover{color:#fff}
+.nav-links a:hover::after,.nav-links a.on::after{transform:scaleX(1)}
+.nav-links a.on{color:var(--cyan)}
+.btn-nav{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;letter-spacing:3px;text-transform:uppercase;background:var(--cyan);color:#fff;padding:12px 30px;border:none;cursor:pointer;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:all .3s;text-decoration:none;display:inline-block}
+.btn-nav:hover{background:#fff;color:var(--dark);transform:translateY(-2px)}
+.hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:white}
+.sec-tag{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sec-tag::before{content:'//';opacity:.4}
+.page-hero{padding:170px 56px 80px;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,48,135,.06) 0%,transparent 60%);pointer-events:none}
+.page-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(70px,10vw,130px);line-height:.87;letter-spacing:4px}
+.page-hero h1 .ol{-webkit-text-stroke:2px rgba(255,255,255,.2);color:transparent}
+.page-hero h1 .cy{color:var(--cyan)}
+.page-hero p{font-size:16px;font-weight:300;color:rgba(255,255,255,.45);max-width:520px;margin-top:22px;line-height:1.8}
+.info-strip{background:var(--cyan);padding:0 56px;display:grid;grid-template-columns:repeat(3,1fr)}
+.strip-item{padding:28px 20px;border-right:1px solid rgba(255,255,255,.15);display:flex;align-items:center;gap:14px}
+.strip-item:last-child{border-right:none}
+.strip-item i{font-size:20px;color:rgba(255,255,255,.75);flex-shrink:0}
+.strip-item h4{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#fff}
+.strip-item p{font-size:13px;color:rgba(255,255,255,.75);font-weight:300;margin-top:2px}
+.contact-sec{padding:72px 56px 108px;display:grid;grid-template-columns:1fr 1.4fr;gap:80px;align-items:start}
+.info-col h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,5.5vw,72px);letter-spacing:3px;line-height:.9;margin:14px 0 28px}
+.info-col h2 .cy{color:var(--cyan)}
+.contact-cards{display:flex;flex-direction:column;gap:3px}
+.cc{background:var(--dark2);padding:22px 24px;display:flex;align-items:flex-start;gap:16px;border-left:3px solid transparent;transition:all .3s}
+.cc:hover{border-left-color:var(--cyan);background:var(--dark3)}
+.cc-icon{width:44px;height:44px;background:rgba(0,48,135,.07);border:1px solid rgba(0,48,135,.18);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--cyan);clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);flex-shrink:0;transition:all .3s}
+.cc:hover .cc-icon{background:var(--cyan);color:#fff}
+.cc-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px}
+.cc-val{font-size:15px;color:#fff;font-weight:300;line-height:1.5}
+.cc-val a{color:#fff;text-decoration:none;transition:color .2s}
+.cc-val a:hover{color:var(--cyan)}
+.social-row{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.soc-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:all .3s;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:rgba(255,255,255,.6)}
+.soc-btn:hover{transform:translateY(-2px)}
+.soc-ig:hover{background:#e1306c;border-color:#e1306c;color:#fff}
+.soc-fb:hover{background:#1877f2;border-color:#1877f2;color:#fff}
+.soc-wa{background:#25d366;border-color:#25d366;color:#fff}
+.soc-wa:hover{background:#1dba5a}
+.form-col{background:var(--dark2);padding:44px;border-top:3px solid var(--cyan)}
+.form-col h3{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:2px;margin-bottom:6px}
+.form-col > p{font-size:14px;color:rgba(255,255,255,.35);font-weight:300;margin-bottom:32px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fg{margin-bottom:20px}
+.fg label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:8px}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--dark);border:1px solid rgba(255,255,255,.08);color:#fff;font-family:'Barlow',sans-serif;font-size:14px;font-weight:300;padding:14px 16px;outline:none;transition:border-color .3s;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--cyan)}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.22)}
+.fg select{appearance:none;cursor:pointer;color:rgba(255,255,255,.7)}
+.fg select option{background:var(--dark2)}
+.fg textarea{resize:vertical;min-height:120px}
+.chips-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:10px;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.chip{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);padding:8px 18px;cursor:pointer;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);transition:all .25s}
+.chip:hover,.chip.on{background:var(--cyan);border-color:var(--cyan);color:#fff}
+.btn-submit{width:100%;padding:18px;background:var(--cyan);color:#fff;border:none;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;letter-spacing:4px;text-transform:uppercase;cursor:pointer;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);position:relative;overflow:hidden;transition:all .3s}
+.btn-submit::after{content:'';position:absolute;inset:0;background:#fff;transform:translateX(-110%) skewX(-15deg);transition:transform .4s}
+.btn-submit:hover::after{transform:translateX(110%) skewX(-15deg)}
+.btn-submit:hover{transform:translateY(-3px);box-shadow:0 12px 38px rgba(0,48,135,.45)}
+.btn-submit span{position:relative;z-index:1}
+.btn-submit:hover span{color:var(--dark)}
+.form-note{font-size:11px;color:rgba(255,255,255,.2);text-align:center;margin-top:14px}
+#success-view{display:none;text-align:center;padding:48px 20px}
+.check-icon{width:70px;height:70px;background:var(--cyan);clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:28px}
+#success-view h3{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:3px;margin-bottom:12px}
+#success-view p{font-size:15px;color:rgba(255,255,255,.45);font-weight:300;line-height:1.8}
+.location-band{background:var(--dark2);border-top:1px solid rgba(255,255,255,.04);padding:64px 56px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.location-band h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,5vw,62px);letter-spacing:3px;line-height:.9;color:#fff;margin:14px 0 12px}
+.location-band h2 .cy{color:var(--cyan)}
+.location-band p{font-size:14px;color:rgba(255,255,255,.38);font-weight:300;line-height:1.7}
+.btn-maps{display:inline-flex;align-items:center;gap:10px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;letter-spacing:3px;text-transform:uppercase;background:var(--cyan);color:#fff;padding:18px 38px;text-decoration:none;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);white-space:nowrap;transition:all .3s}
+.btn-maps:hover{background:#fff;color:var(--dark);transform:translateY(-2px)}
+footer{background:var(--dark2);border-top:1px solid rgba(255,255,255,.045);padding:54px 56px 38px}
+.fi{display:flex;justify-content:space-between;align-items:center;margin-bottom:38px;gap:32px;flex-wrap:wrap}
+.flogo img{height:46px;filter:brightness(0) invert(1);opacity:.75}
+.flinks{display:flex;gap:28px;flex-wrap:wrap}
+.flinks a{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.3);text-decoration:none;transition:color .3s}
+.flinks a:hover{color:var(--cyan)}
+.fso{display:flex;gap:12px}
+.fso a{width:40px;height:40px;border:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:center;font-size:15px;color:rgba(255,255,255,.32);transition:all .3s;text-decoration:none;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%)}
+.fso a:hover{background:var(--cyan);border-color:var(--cyan);color:#fff}
+.fb{display:flex;justify-content:space-between;align-items:center;padding-top:26px;border-top:1px solid rgba(255,255,255,.045);flex-wrap:wrap;gap:10px}
+.fb p{font-size:11px;color:rgba(255,255,255,.18);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px}
+.pwrd{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.15)}
+.pwrd a{color:rgba(0,48,135,.48);font-weight:700;text-decoration:none;transition:color .3s}
+.pwrd a:hover{color:var(--cyan)}
+.rv{opacity:0;transform:translateY(30px);transition:all .8s ease}
+.rv.vi{opacity:1;transform:translateY(0)}
+@media(max-width:1024px){
+  #nav{padding:18px 24px}#nav.sc{padding:13px 24px}
+  .nav-links{display:none}.hamburger{display:flex}
+  .page-hero{padding:130px 24px 56px}
+  .info-strip{padding:0 24px;grid-template-columns:1fr}
+  .strip-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.12)}
+  .strip-item:last-child{border-bottom:none}
+  .contact-sec{padding:48px 24px 72px;grid-template-columns:1fr;gap:40px}
+  .location-band{padding:48px 24px;flex-direction:column;align-items:flex-start}
+  footer{padding:44px 24px 28px}
+  .fi{flex-direction:column;align-items:flex-start}
+  .fb{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:600px){.frow{grid-template-columns:1fr}.form-col{padding:28px 20px}}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<div id="loader">
+  <img src="images/logo.png" alt="RYC Excursiones" style="height:80px;filter:brightness(0) invert(1);margin-bottom:28px;animation:lpulse 1.4s ease-in-out infinite;">
+  <div class="lbar-wrap"><div class="lbar"></div></div>
+</div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo"><img src="images/logo.png" alt="RYC Excursiones"></a>
+  <div class="nav-links">
+    <a href="index.html">Inicio</a>
+    <a href="excursiones.html">Excursiones</a>
+    <a href="galeria.html">Galería</a>
+    <a href="nosotros.html">Nosotros</a>
+    <a href="contacto.html" class="on">Contacto</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <button class="hamburger" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
+    <a href="https://wa.me/18492650340" target="_blank" class="btn-nav">Reservar Ahora</a>
+  </div>
+</nav>
+
+<section class="page-hero rv">
+  <div class="sec-tag">Contacto</div>
+  <h1>HABLEMOS<br><span class="ol">DE TU</span><br><span class="cy">AVENTURA</span></h1>
+  <p>Escríbenos por WhatsApp o completa el formulario. Respuesta garantizada en menos de 2 horas.</p>
+</section>
+
+<div class="info-strip">
+  <div class="strip-item"><i class="fas fa-map-marker-alt"></i><div><h4>Oficina</h4><p>Plaza Central, Av. 27 de Febrero, Santo Domingo</p></div></div>
+  <div class="strip-item"><i class="fas fa-clock"></i><div><h4>Horario</h4><p>Lunes a Viernes: 10:00am - 6:00pm</p></div></div>
+  <div class="strip-item"><i class="fab fa-whatsapp"></i><div><h4>WhatsApp Directo</h4><p>+1 (849) 265-0340</p></div></div>
+</div>
+
+<div class="contact-sec">
+
+  <div class="info-col rv">
+    <div class="sec-tag">Info de contacto</div>
+    <h2>ESTAMOS<br>AQUI PARA<br><span class="cy">AYUDARTE</span></h2>
+    <div class="contact-cards">
+      <div class="cc">
+        <div class="cc-icon"><i class="fas fa-phone"></i></div>
+        <div>
+          <div class="cc-lbl">Telefonos</div>
+          <div class="cc-val">
+            <a href="tel:+18296962459">829-696-2459</a> &nbsp;/&nbsp; <a href="tel:+18098963850">809-896-3850</a>
+          </div>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="cc-icon"><i class="fab fa-whatsapp"></i></div>
+        <div>
+          <div class="cc-lbl">WhatsApp</div>
+          <div class="cc-val">
+            <a href="https://wa.me/18492650340" target="_blank">+1 (849) 265-0340</a><br>
+            <span style="font-size:12px;color:rgba(255,255,255,.3)">Respuesta inmediata</span>
+          </div>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="cc-icon"><i class="fas fa-envelope"></i></div>
+        <div>
+          <div class="cc-lbl">Email</div>
+          <div class="cc-val"><a href="mailto:rycexcursiones@gmail.com">rycexcursiones@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="cc-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div>
+          <div class="cc-lbl">Ubicacion</div>
+          <div class="cc-val">Plaza Central<br>Avenida 27 de Febrero<br>Santo Domingo, Republica Dominicana</div>
+          <a href="https://share.google/OTMmJ1Xglr6PPwWZy" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);text-decoration:none;margin-top:8px"><i class="fas fa-external-link-alt"></i> Ver en Google Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="social-row">
+      <a href="https://www.instagram.com/rycexcursiones/" target="_blank" class="soc-btn soc-ig"><i class="fab fa-instagram"></i> Instagram</a>
+      <a href="https://www.facebook.com/rycexcursionesrd/?locale=es_LA" target="_blank" class="soc-btn soc-fb"><i class="fab fa-facebook-f"></i> Facebook</a>
+      <a href="https://wa.me/18492650340" target="_blank" class="soc-btn soc-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+    </div>
+  </div>
+
+  <div class="form-col rv" style="transition-delay:.15s">
+    <div id="form-view">
+      <h3>ENVIAR MENSAJE</h3>
+      <p>Cuentanos que tour te interesa y te respondemos con todos los detalles.</p>
+      <div class="frow">
+        <div class="fg"><label>Nombre</label><input type="text" id="f-nombre" placeholder="Tu nombre"></div>
+        <div class="fg"><label>Apellido</label><input type="text" placeholder="Tu apellido"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Email</label><input type="email" placeholder="correo@ejemplo.com"></div>
+        <div class="fg"><label>WhatsApp</label><input type="tel" placeholder="+1 (000) 000-0000"></div>
+      </div>
+      <div class="fg">
+        <label>Tour de interes</label>
+        <select>
+          <option value="">Selecciona un tour...</option>
+          <option>Isla Saona Premium</option>
+          <option>Parapente Jarabacoa</option>
+          <option>Cascada El Limon</option>
+          <option>Buggy Punta Cana</option>
+          <option>Ballenas Jorobadas - Samana</option>
+          <option>Laguna Dudu + Rio San Juan</option>
+          <option>Cano Frio + Playa Fronton</option>
+          <option>Ciudad Colonial Santo Domingo</option>
+          <option>La Vuelta a RD (7 dias)</option>
+          <option>Tour Personalizado</option>
+        </select>
+      </div>
+      <span class="chips-lbl">Numero de personas</span>
+      <div class="chips" id="personas">
+        <button class="chip" type="button" onclick="selectChip(this,'personas')">Solo (1)</button>
+        <button class="chip" type="button" onclick="selectChip(this,'personas')">2 - 4</button>
+        <button class="chip" type="button" onclick="selectChip(this,'personas')">5 - 10</button>
+        <button class="chip" type="button" onclick="selectChip(this,'personas')">11 - 20</button>
+        <button class="chip" type="button" onclick="selectChip(this,'personas')">+20</button>
+      </div>
+      <div class="fg"><label>Fecha preferida</label><input type="date"></div>
+      <div class="fg"><label>Mensaje</label><textarea placeholder="Cuentanos mas sobre tu viaje..."></textarea></div>
+      <button type="button" class="btn-submit" onclick="submitForm()"><span>Enviar Mensaje &nbsp;<i class="fas fa-arrow-right"></i></span></button>
+      <p class="form-note"><i class="fas fa-lock"></i> Tu informacion es privada y nunca sera compartida.</p>
+    </div>
+
+    <div id="success-view">
+      <div class="check-icon"><i class="fas fa-check"></i></div>
+      <h3>MENSAJE ENVIADO</h3>
+      <p>Gracias por contactarnos.<br>Te respondemos en menos de 2 horas.<br><br><strong style="color:var(--cyan)">Preparate para la aventura!</strong></p>
+      <div style="margin-top:28px">
+        <a href="https://wa.me/18492650340" target="_blank" style="display:inline-flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;letter-spacing:3px;text-transform:uppercase;background:#25d366;color:#fff;padding:14px 28px;text-decoration:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)"><i class="fab fa-whatsapp"></i> Seguir por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="location-band rv">
+  <div>
+    <div class="sec-tag">Como llegarnos</div>
+    <h2>PLAZA CENTRAL<br><span class="cy">AV. 27 DE FEBRERO</span></h2>
+    <p>Santo Domingo, Republica Dominicana<br>Atencion de Lunes a Viernes - 10:00am a 6:00pm</p>
+  </div>
+  <a href="https://share.google/OTMmJ1Xglr6PPwWZy" target="_blank" class="btn-maps"><i class="fas fa-directions"></i> Ver en Google Maps</a>
+</div>
+
+<footer>
+  <div class="fi">
+    <a href="index.html" class="flogo"><img src="images/logo.png" alt="RYC Excursiones"></a>
+    <nav class="flinks">
+      <a href="index.html">Inicio</a>
+      <a href="excursiones.html">Excursiones</a>
+      <a href="galeria.html">Galeria</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+    <div class="fso">
+      <a href="https://www.instagram.com/rycexcursiones/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.facebook.com/rycexcursionesrd/?locale=es_LA" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://wa.me/18492650340" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    </div>
+  </div>
+  <div class="fb">
+    <p>2026 RYC Excursiones RD. Todos los derechos reservados.</p>
+    <p class="pwrd">Powered by <a href="https://growpilot.lat" target="_blank">Growpilot</a></p>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    document.getElementById('loader').classList.add('hide');
+  }, 1950);
+});
+
+var cur = document.getElementById('cur');
+var ring = document.getElementById('cur-ring');
+var mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', function(e) {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx+'px'; cur.style.top = my+'px';
+});
+(function animR() {
+  rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+  ring.style.left = rx+'px'; ring.style.top = ry+'px';
+  requestAnimationFrame(animR);
+})();
+document.querySelectorAll('a,button').forEach(function(el) {
+  el.addEventListener('mouseenter', function() { cur.style.width='20px'; cur.style.height='20px'; ring.style.width='54px'; ring.style.height='54px'; });
+  el.addEventListener('mouseleave', function() { cur.style.width='10px'; cur.style.height='10px'; ring.style.width='38px'; ring.style.height='38px'; });
+});
+
+var navEl = document.getElementById('nav');
+window.addEventListener('scroll', function() {
+  navEl.classList.toggle('sc', window.scrollY > 60);
+});
+
+var rvObs = new IntersectionObserver(function(es) {
+  es.forEach(function(e) {
+    if (e.isIntersecting) { e.target.classList.add('vi'); rvObs.unobserve(e.target); }
+  });
+}, {threshold: 0.1});
+document.querySelectorAll('.rv').forEach(function(el) { rvObs.observe(el); });
+
+function selectChip(el, groupId) {
+  document.querySelectorAll('#'+groupId+' .chip').forEach(function(c) { c.classList.remove('on'); });
+  el.classList.add('on');
+}
+
+function submitForm() {
+  var nombre = document.getElementById('f-nombre').value.trim();
+  if (!nombre) { alert('Por favor ingresa tu nombre.'); return; }
+  document.getElementById('form-view').style.display = 'none';
+  document.getElementById('success-view').style.display = 'block';
+}
+</script>
+</body>
+</html>

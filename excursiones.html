@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excursiones | RYC Excursiones — República Dominicana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,700;0,900;1,300&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root { --cyan:#003087; --cyan-dim:rgba(0,48,135,0.12); --dark:#080808; --dark2:#101010; --dark3:#181818; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--dark);color:#fff;overflow-x:hidden;cursor:none}
+#cur{width:10px;height:10px;background:var(--cyan);border-radius:50%;position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:screen}
+#cur-ring{width:38px;height:38px;border:1.5px solid rgba(0,48,135,0.45);border-radius:50%;position:fixed;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);transition:width .35s,height .35s,border-color .3s}
+@media(max-width:1024px){#cur,#cur-ring{display:none}body{cursor:auto}}
+#loader{position:fixed;inset:0;z-index:10000;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}
+#loader.hide{opacity:0;visibility:hidden}
+.lbar-wrap{width:200px;height:2px;background:rgba(255,255,255,.08);margin-top:22px;border-radius:2px;overflow:hidden}
+.lbar{height:100%;background:var(--cyan);width:0;animation:lfill 1.8s ease forwards}
+@keyframes lfill{to{width:100%}}
+@keyframes lpulse{0%,100%{opacity:.5}50%{opacity:1}}
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:28px 56px;transition:all .4s}
+#nav.sc{background:rgba(8,8,8,.97);backdrop-filter:blur(20px);padding:15px 56px;border-bottom:1px solid rgba(0,48,135,0.09);box-shadow:0 0 40px rgba(0,0,0,.6)}
+.nav-logo img{height:52px;filter:brightness(0) invert(1);transition:height .3s}
+#nav.sc .nav-logo img{height:50px}
+.nav-links{display:flex;align-items:center;gap:38px}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none;position:relative;transition:color .3s}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.nav-links a:hover{color:#fff}
+.nav-links a:hover::after,.nav-links a.on::after{transform:scaleX(1)}
+.nav-links a.on{color:var(--cyan)}
+.btn-nav{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;letter-spacing:3px;text-transform:uppercase;background:var(--cyan);color:#fff;padding:12px 30px;border:none;cursor:pointer;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:all .3s;text-decoration:none;display:inline-block}
+.btn-nav:hover{background:#fff;color:var(--dark);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,48,135,0.4)}
+.hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:white}
+/* PAGE HERO */
+.page-hero{padding:170px 56px 80px;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,48,135,0.06) 0%,transparent 60%);pointer-events:none}
+.sec-tag{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sec-tag::before{content:'//';opacity:.4}
+.page-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(70px,10vw,130px);line-height:.87;letter-spacing:4px;color:#fff}
+.page-hero h1 .ol{-webkit-text-stroke:2px rgba(255,255,255,.2);color:transparent}
+.page-hero h1 .cy{color:var(--cyan)}
+.page-hero p{font-size:16px;font-weight:300;color:rgba(255,255,255,.45);max-width:520px;margin-top:22px;line-height:1.8}
+/* FILTER */
+.filter-bar{padding:0 56px 48px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-right:8px}
+.fbtn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;background:transparent;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.45);padding:9px 22px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:all .25s}
+.fbtn:hover,.fbtn.on{background:var(--cyan);border-color:var(--cyan);color:#fff}
+/* GRID */
+.tours-wrap{padding:0 56px 108px}
+.tgrid-full{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.tc{position:relative;overflow:hidden;cursor:pointer;height:500px}
+.tc img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s,filter .4s;filter:brightness(.55) saturate(.72)}
+.tc:hover img{transform:scale(1.07);filter:brightness(.85) saturate(1.1)}
+.tc-ov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,8,8,.96) 0%,rgba(8,8,8,.18) 55%,transparent 100%)}
+.tc-acc{position:absolute;top:0;left:0;right:0;height:3px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.tc:hover .tc-acc{transform:scaleX(1)}
+.tc-num{position:absolute;top:22px;left:22px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:3px;color:rgba(255,255,255,.18)}
+.tc-badge{position:absolute;top:18px;right:18px;background:var(--cyan);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%)}
+.tc-info{position:absolute;bottom:0;left:0;right:0;padding:0 24px 28px}
+.tc-cat{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--cyan);margin-bottom:5px}
+.tc-name{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;line-height:1;color:#fff}
+.tc-desc{font-size:13px;color:rgba(255,255,255,.42);line-height:1.6;margin-top:8px;font-weight:300;max-height:0;overflow:hidden;opacity:0;transition:max-height .4s,opacity .4s}
+.tc:hover .tc-desc{max-height:80px;opacity:1}
+.tc-ftr{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.09)}
+.tc-price{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--cyan);letter-spacing:1px}
+.tc-price small{font-size:13px;color:rgba(255,255,255,.28);font-family:'Barlow',sans-serif;font-weight:300}
+.tc-btn{background:var(--cyan);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border:none;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s,background .3s;text-decoration:none;display:inline-block}
+.tc:hover .tc-btn{opacity:1;transform:translateY(0)}
+.tc-btn:hover{background:#fff;color:var(--dark)}
+.tc.wide{grid-column:span 2}
+.tc.wide .tc-name{font-size:42px}
+/* CTA BAND */
+.cta-band{background:var(--dark2);padding:80px 56px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.04)}
+.cta-band-txt h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,5vw,68px);letter-spacing:3px;line-height:.9}
+.cta-band-txt h2 .cy{color:var(--cyan)}
+.cta-band-txt p{font-size:15px;color:rgba(255,255,255,.38);font-weight:300;margin-top:14px;max-width:420px;line-height:1.7}
+.btn-g{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;background:transparent;border:1.5px solid rgba(255,255,255,.22);color:#fff;padding:16px 42px;cursor:pointer;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);transition:all .3s;text-decoration:none;display:inline-block}
+.btn-g:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn-wa{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;letter-spacing:3px;text-transform:uppercase;background:#25d366;color:#fff;padding:17px 50px;border:none;cursor:pointer;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:10px}
+.btn-wa:hover{background:#1dba5a;transform:translateY(-3px);box-shadow:0 12px 38px rgba(37,211,102,.4)}
+/* FOOTER */
+footer{background:var(--dark2);border-top:1px solid rgba(255,255,255,.045);padding:54px 56px 38px}
+.fi{display:flex;justify-content:space-between;align-items:center;margin-bottom:38px;gap:32px;flex-wrap:wrap}
+.flogo img{height:46px;filter:brightness(0) invert(1);opacity:.75}
+.flinks{display:flex;gap:28px;flex-wrap:wrap}
+.flinks a{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.3);text-decoration:none;transition:color .3s}
+.flinks a:hover{color:var(--cyan)}
+.fso{display:flex;gap:12px}
+.fso a{width:40px;height:40px;border:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:center;font-size:15px;color:rgba(255,255,255,.32);transition:all .3s;text-decoration:none;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%)}
+.fso a:hover{background:var(--cyan);border-color:var(--cyan);color:#fff}
+.fb{display:flex;justify-content:space-between;align-items:center;padding-top:26px;border-top:1px solid rgba(255,255,255,.045);flex-wrap:wrap;gap:10px}
+.fb p{font-size:11px;color:rgba(255,255,255,.18);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px}
+.pwrd{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.15)}
+.pwrd a{color:rgba(0,48,135,0.48);font-weight:700;text-decoration:none;transition:color .3s}
+.pwrd a:hover{color:var(--cyan)}
+.rv{opacity:0;transform:translateY(30px);transition:all .8s ease}
+.rv.vi{opacity:1;transform:translateY(0)}
+@media(max-width:1024px){
+  #nav{padding:18px 24px}#nav.sc{padding:13px 24px}
+  .nav-links{display:none}.hamburger{display:flex}
+  .page-hero{padding:130px 24px 56px}
+  .filter-bar{padding:0 24px 36px}
+  .tours-wrap{padding:0 24px 72px}
+  .tgrid-full{grid-template-columns:1fr 1fr}
+  .tc{height:360px}.tc.wide{grid-column:span 1}.tc.wide .tc-name{font-size:30px}
+  .cta-band{padding:56px 24px;flex-direction:column}
+  footer{padding:44px 24px 28px}
+  .fi{flex-direction:column;align-items:flex-start}
+  .fb{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:600px){.tgrid-full{grid-template-columns:1fr}.tc{height:320px}}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-ring"></div>
+<div id="loader">
+  <img src="images/logo.png" alt="RYC Excursiones" style="height:80px;filter:brightness(0) invert(1);margin-bottom:28px;animation:lpulse 1.4s ease-in-out infinite;">
+  <div class="lbar-wrap"><div class="lbar"></div></div>
+</div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo"><img src="images/logo.png" alt="RYC Excursiones"></a>
+  <div class="nav-links">
+    <a href="index.html">Inicio</a>
+    <a href="excursiones.html" class="on">Excursiones</a>
+    <a href="galeria.html">Galería</a>
+    <a href="nosotros.html">Nosotros</a>
+    <a href="contacto.html">Contacto</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <button class="hamburger" id="hbg" aria-label="Menú"><span></span><span></span><span></span></button>
+    <a href="https://wa.me/18492650340" target="_blank" class="btn-nav">Reservar Ahora</a>
+  </div>
+</nav>
+
+<section class="page-hero rv">
+  <div class="sec-tag">Tours &amp; Excursiones</div>
+  <h1>ELIGE TU<br><span class="ol">PRÓXIMA</span><br><span class="cy">MISIÓN</span></h1>
+  <p>Desde las aguas cristalinas de Isla Saona hasta el vuelo sobre Jarabacoa. Experiencias auténticas, guías certificados y recuerdos para toda la vida.</p>
+</section>
+
+<div class="filter-bar rv">
+  <span class="filter-lbl">// Filtrar por</span>
+  <button class="fbtn on" onclick="filterTours(this,'all')">Todos</button>
+  <button class="fbtn" onclick="filterTours(this,'mar')">Mar &amp; Playa</button>
+  <button class="fbtn" onclick="filterTours(this,'aventura')">Adrenalina</button>
+  <button class="fbtn" onclick="filterTours(this,'naturaleza')">Naturaleza</button>
+  <button class="fbtn" onclick="filterTours(this,'cultural')">Cultural</button>
+  <button class="fbtn" onclick="filterTours(this,'weekend')">Fin de Semana</button>
+</div>
+
+<div class="tours-wrap">
+  <div class="tgrid-full rv" id="tours-grid">
+
+    <div class="tc wide" data-cat="mar">
+      <img src="images/isla-saona.jpeg" alt="Isla Saona">
+      <div class="tc-ov"></div><div class="tc-acc"></div>
+      <div class="tc-num">01</div><div class="tc-badge">MÁS VENDIDO</div>
+      <div class="tc-info">
+        <div class="tc-cat">// Relax &amp; Mar</div>
+        <div class="tc-name">ISLA SAONA PREMIUM</div>
+        <div class="tc-desc">Catamarán, barra libre, almuerzo buffet y las aguas más cristalinas del Caribe. Un día completo en la isla más famosa de RD.</div>
+        <div class="tc-ftr"><div class="tc-price"><small>desde </small>$85</div><a href="https://wa.me/18492650340" target="_blank" class="tc-btn">Reservar</a></div>
+      </div>
+    </div>
+
+    <div class="tc" data-cat="aventura">
+      <img src="images/parapente-jarabacoa.jpeg" alt="Parapente Jarabacoa">
+      <div class="tc-ov"></div><div class="tc-acc"></div>
+      <div class="tc-num">02</div>
+      <div class="tc-info">
+        <div class="tc-cat">// Adrenalina</div>
+        <div class="tc-name">PARAPENTE JARABACOA</div>
+        <div class="tc-desc">Vuela en tándem sobre los valles verdes de Jarabacoa. Instructores certificados y equipo de última generación.</div>
+        <div class="tc-ftr"><div class="tc-price"><small>desde </small>$75</div><a href="https://wa.me/18492650340" target="_blank" class="tc-btn">Reservar</a></div>
+      </div>
+    </div>
+
+    <div class="tc" data-cat="naturaleza">
+      <img src="images/cascada-limon.jpeg" alt="Cascada El Limón">
+      <div class="tc-ov"></div><div class="tc-acc"></div>
+      <div class="tc-num">03</div>
+      <div class="tc-info">
+        <div class="tc-cat">// Naturaleza</div>
+        <div class="tc-name">CASCADA EL LIMÓN</div>
+        <div class="tc-desc">Viaje a caballo por la selva de Samaná hasta una de las cascadas más espectaculares de la isla.</div>
+        <div class="tc-ftr"><div class="tc-price"><small>desde </small>$60</div><a href="https://wa.me/18492650340" target="_blank" class="tc-btn">Reservar</a></div>
+      </div>
+    </div>
+
+    <div class="tc" data-cat="aventura">
+      <img src="images/buggy-punta-cana.jpeg" alt="Buggy Punta Cana">
+      <div class="tc-ov"></div><div class="tc-acc"></div>
+      <div class="tc-num">04</div>
+      <div class="tc-info">
+        <div class="tc-cat">// Off-Road</div>
+        <div class="tc-name">BUGGY PUNTA CANA</div>
+        <div class="tc-desc">Lodo, cuevas y adrenalina por los caminos más salvajes de Punta Cana. Incluye visita a aldea taína y playa.</div>
+        <div class="tc-ftr"><div class="tc-price"><small>desde </small>$55</div><a href="https://wa.me/18492650340" target="_blank" class="tc-btn">Reservar</a></div>
+      </div>
+    </div>
+
+    <div class="tc wide" data-cat="naturaleza">
+      <img src="images/naturaleza-rd.jpeg" alt="Ballenas Jorobadas">
+      <div class="tc-ov"></div><div class="tc-acc"></div>
+      <div class="tc-num">05</div><div class="tc-badge">ENE – MAR</div>
+      <div class="tc-info">
+        <div class="tc-cat">// Naturaleza</div>
+        <div class="tc-name">BALLENAS JOROBADAS — SAMANÁ</div>
+        <div class="tc-desc">Observa las majestuosas ballenas jorobadas en la Bahía de Samaná. Una experiencia única e irrepetible en el Caribe.</div>
+        <div class="tc-ftr"><div class="tc-price"><small>desde </small>$80</div><a href="https://wa.me/18492650340" target="_blank" class="tc-btn">Reservar</a></div>
+      </div>
+    </div>
+
+    <div class="tc" data-cat="naturaleza">
+      <img src="images/jarabacoa-paisaje.jpeg" alt="Laguna Dudú">
+      <div class="tc-ov"></div><div class="tc-acc"></div>
+      <div class="tc-num">06</div>
+      <div class="tc-info">
+        <div class="tc-cat">// Naturaleza</div>
+        <div class="tc-name">LAGUNA DUDÚ + RÍO SAN JUAN</div>
+        <div class="tc-desc">Sumérgete en las aguas turquesa de la Laguna Dudú y disfruta el hermoso Río San Juan en el norte del país.</div>
+        <div class="tc-ftr"><div class="tc-price"><small>desde </small>$49</div><a href="https://wa.me/18492650340" target="_blank" class="tc-btn">Reservar</a></div>
+      </div>
+    </div>
+
+    <div class="tc" data-cat="mar">
+      <img src="images/cascada-natural.jpeg" alt="Caño Frío">
+      <div class="tc-ov"></div><div class="tc-acc"></div>
+      <div class="tc-num">07</div>
+      <div class="tc-info">
+        <div class="tc-cat">// Mar &amp; Naturaleza</div>
+        <div class="tc-name">CAÑO FRÍO + PLAYA FRONTÓN</div>
+        <div class="tc-desc">Navega por el río Caño Frío hasta la impresionante Playa Frontón, rodeada de acantilados y aguas cristalinas.</div>
+        <div class="tc-ftr"><div class="tc-price"><small>desde </small>$56</div><a href="https://wa.me/18492650340" target="_blank" class="tc-btn">Reservar</a></div>
+      </div>
+    </div>
+
+    <div class="tc" data-cat="cultural">
+      <img src="images/tour-cultural.jpeg" alt="Ciudad Colonial">
+      <div class="tc-ov"></div><div class="tc-acc"></div>
+      <div class="tc-num">08</div>
+      <div class="tc-info">
+        <div class="tc-cat">// Cultural</div>
+        <div class="tc-name">CIUDAD COLONIAL SDQ</div>
+        <div class="tc-desc">Recorre la primera ciudad del Nuevo Mundo. Zona Colonial, museos, gastronomía y arquitectura del siglo XVI.</div>
+        <div class="tc-ftr"><div class="tc-price"><small>desde </small>$45</div><a href="https://wa.me/18492650340" target="_blank" class="tc-btn">Reservar</a></div>
+      </div>
+    </div>
+
+    <div class="tc wide" data-cat="weekend">
+      <img src="images/grupo-tour.jpeg" alt="La Vuelta a RD">
+      <div class="tc-ov"></div><div class="tc-acc"></div>
+      <div class="tc-num">09</div><div class="tc-badge">7 DÍAS</div>
+      <div class="tc-info">
+        <div class="tc-cat">// Tour Completo</div>
+        <div class="tc-name">LA VUELTA A REPÚBLICA DOMINICANA</div>
+        <div class="tc-desc">7 días explorando lo mejor del país: playas paradisíacas, ríos cristalinos, cascadas impresionantes, lagunas escondidas e islas idílicas.</div>
+        <div class="tc-ftr"><div class="tc-price"><small>desde </small>$480</div><a href="https://wa.me/18492650340" target="_blank" class="tc-btn">Reservar</a></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="cta-band rv">
+  <div class="cta-band-txt">
+    <div class="sec-tag">Reserva Fácil</div>
+    <h2>ESCRÍBENOS<br>POR <span class="cy">WHATSAPP</span></h2>
+    <p>Te respondemos en minutos y te ayudamos a elegir el tour perfecto según tus fechas, presupuesto y tamaño de grupo.</p>
+  </div>
+  <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+    <a href="https://wa.me/18492650340" target="_blank" class="btn-wa"><i class="fab fa-whatsapp"></i> Reservar Ahora</a>
+    <a href="contacto.html" class="btn-g">Formulario →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="fi">
+    <a href="index.html" class="flogo"><img src="images/logo.png" alt="RYC Excursiones"></a>
+    <nav class="flinks">
+      <a href="index.html">Inicio</a><a href="excursiones.html">Excursiones</a>
+      <a href="galeria.html">Galería</a><a href="nosotros.html">Nosotros</a><a href="contacto.html">Contacto</a>
+    </nav>
+    <div class="fso">
+      <a href="https://www.instagram.com/rycexcursiones/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.facebook.com/rycexcursionesrd/?locale=es_LA" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://wa.me/18492650340" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    </div>
+  </div>
+  <div class="fb">
+    <p>© 2026 RYC Excursiones RD. Todos los derechos reservados.</p>
+    <p class="pwrd">Powered by <a href="https://growpilot.lat" target="_blank">Growpilot</a></p>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('hide'),1950));
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function animR(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animR);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='20px';cur.style.height='20px';ring.style.width='54px';ring.style.height='54px';ring.style.borderColor='rgba(0,48,135,0.8)';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';ring.style.width='38px';ring.style.height='38px';ring.style.borderColor='rgba(0,48,135,0.45)';});
+});
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',window.scrollY>60));
+const rvObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vi');rvObs.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>rvObs.observe(el));
+function filterTours(btn,cat){
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.tc').forEach(tc=>{
+    tc.style.display=(cat==='all'||tc.dataset.cat===cat)?'block':'none';
+  });
+}
+</script>
+</body>
+</html>
